@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "competition": "FIFA World Cup 2026",
+    "status": "sample_for_simulation",
+    "notes": "Lista exemplo com 32 seleções para uso em simulador. Não representa a classificação real/final da Copa de 2026."
+  },
+  "teams": [
+    { "name": "Argentina", "code": "ARG", "confederation": "CONMEBOL", "flag": "🇦🇷" },
+    { "name": "Brazil", "code": "BRA", "confederation": "CONMEBOL", "flag": "🇧🇷" },
+    { "name": "Uruguay", "code": "URU", "confederation": "CONMEBOL", "flag": "🇺🇾" },
+    { "name": "Colombia", "code": "COL", "confederation": "CONMEBOL", "flag": "🇨🇴" },
+    { "name": "Ecuador", "code": "ECU", "confederation": "CONMEBOL", "flag": "🇪🇨" },
+    { "name": "Chile", "code": "CHI", "confederation": "CONMEBOL", "flag": "🇨🇱" },
+    { "name": "Canada", "code": "CAN", "confederation": "CONCACAF", "qualificationType": "host", "flag": "🇨🇦" },
+    { "name": "Mexico", "code": "MEX", "confederation": "CONCACAF", "qualificationType": "host", "flag": "🇲🇽" },
+    { "name": "United States", "code": "USA", "confederation": "CONCACAF", "qualificationType": "host", "flag": "🇺🇸" },
+    { "name": "Costa Rica", "code": "CRC", "confederation": "CONCACAF", "flag": "🇨🇷" },
+    { "name": "France", "code": "FRA", "confederation": "UEFA", "flag": "🇫🇷" },
+    { "name": "England", "code": "ENG", "confederation": "UEFA", "flag": "🏴" },
+    { "name": "Spain", "code": "ESP", "confederation": "UEFA", "flag": "🇪🇸" },
+    { "name": "Germany", "code": "GER", "confederation": "UEFA", "flag": "🇩🇪" },
+    { "name": "Portugal", "code": "POR", "confederation": "UEFA", "flag": "🇵🇹" },
+    { "name": "Italy", "code": "ITA", "confederation": "UEFA", "flag": "🇮🇹" },
+    { "name": "Netherlands", "code": "NED", "confederation": "UEFA", "flag": "🇳🇱" },
+    { "name": "Belgium", "code": "BEL", "confederation": "UEFA", "flag": "🇧🇪" },
+    { "name": "Croatia", "code": "CRO", "confederation": "UEFA", "flag": "🇭🇷" },
+    { "name": "Denmark", "code": "DEN", "confederation": "UEFA", "flag": "🇩🇰" },
+    { "name": "Switzerland", "code": "SUI", "confederation": "UEFA", "flag": "🇨🇭" },
+    { "name": "Poland", "code": "POL", "confederation": "UEFA", "flag": "🇵🇱" },
+    { "name": "Serbia", "code": "SRB", "confederation": "UEFA", "flag": "🇷🇸" },
+    { "name": "Japan", "code": "JPN", "confederation": "AFC", "flag": "🇯🇵" },
+    { "name": "South Korea", "code": "KOR", "confederation": "AFC", "flag": "🇰🇷" },
+    { "name": "Australia", "code": "AUS", "confederation": "AFC", "flag": "🇦🇺" },
+    { "name": "Iran", "code": "IRN", "confederation": "AFC", "flag": "🇮🇷" },
+    { "name": "Saudi Arabia", "code": "KSA", "confederation": "AFC", "flag": "🇸🇦" },
+    { "name": "Morocco", "code": "MAR", "confederation": "CAF", "flag": "🇲🇦" },
+    { "name": "Senegal", "code": "SEN", "confederation": "CAF", "flag": "🇸🇳" },
+    { "name": "Nigeria", "code": "NGA", "confederation": "CAF", "flag": "🇳🇬" },
+    { "name": "Cameroon", "code": "CMR", "confederation": "CAF", "flag": "🇨🇲" }
+  ]
+}
