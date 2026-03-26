@@ -2,47 +2,47 @@
 
 import styled from 'styled-components';
 
-export { Main, ContentWrapper,SearchBar,NationsBox,GroupsContent};
+export { Main, ContentWrapper, SearchBar, NationsBox, GroupsContent,ContentGroups };
 
 const Main = styled.main`
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
 
   display: flex;
-  align-items: center;
   justify-content: center;
-  flex-direction: column;
-  margin: 4rem 0rem 2rem 0rem;
-
+  padding: 4rem 1.5rem 2rem;
   box-sizing: border-box;
-
-  @media (max-width: 1440px) {
-    padding: 1.5rem;
-  }
-
-  @media (max-width: 860px) {
-    display: block;
-    padding: 1.5rem;
-  }
 `;
 
 const ContentWrapper = styled.div`
+  width: 100%;
+  max-width: 1200px;
+
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: ${({ theme }) => theme.gap.xl};
-
-  max-width: 100%;
   box-sizing: border-box;
 `;
 
 const SearchBar = styled.div`
-  display:flex
-`
+  display: flex;
+  width: 100%;
+`;
+
 const NationsBox = styled.div`
-  display:flex
-`
+  display: flex;
+  width: 100%;
+`;
 
 const GroupsContent = styled.div`
-  display:flex
-`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+`;
+const ContentGroups = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+`;
