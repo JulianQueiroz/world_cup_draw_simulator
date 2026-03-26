@@ -1,14 +1,21 @@
 import { Field, FieldLabel } from "../ui/field";
 import { Progress } from "../ui/progress";
 
-const CompletedSelectionProgress = () => {
+type Props = {
+  selectedCount: number
+  maxTeams: number
+}
+
+const CompletedSelectionProgress = ({selectedCount, maxTeams}:Props) => {
+  const progressValue = (selectedCount / maxTeams) * 100
+  
   return (
     <Field className="w-full max-w-sm">
       <FieldLabel htmlFor="progress-upload">
-        <span>Upload progress</span>
-        <span className="ml-auto">66%</span>
+        <span>{selectedCount}/{maxTeams}</span>
+        <span className="ml-auto">Teste</span>
       </FieldLabel>
-      <Progress value={66} id="progress-upload" />
+      <Progress value={progressValue}  id="progress-upload" />
     </Field>
   );
 };
