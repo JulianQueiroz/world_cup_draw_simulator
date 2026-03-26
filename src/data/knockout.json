@@ -1,0 +1,157 @@
+{
+    "tournament": {
+    "id": "tournament-2024-spring",
+    "name": "Spring Championship 2024",
+    "description": "Regional tournament for spring season",
+    "status": "in-progress",
+    "rounds": [
+      {
+        "id": "round-1",
+        "name": "Round 1 (Quarterfinals)",
+        "number": 1,
+        "matches": [
+          {
+            "id": "match-1",
+            "matchNumber": 1,
+            "status": "completed",
+            "team1": {
+              "id": "team-1",
+              "name": "Phoenix Rising",
+              "seed": 1,
+              "score": 3
+            },
+            "team2": {
+              "id": "team-8",
+              "name": "Thunder Strikers",
+              "seed": 8,
+              "score": 1
+            },
+            "winner": "team-1"
+          },
+          {
+            "id": "match-2",
+            "matchNumber": 2,
+            "status": "completed",
+            "team1": {
+              "id": "team-4",
+              "name": "Dragon Force",
+              "seed": 4,
+              "score": 2
+            },
+            "team2": {
+              "id": "team-5",
+              "name": "Shadow Knights",
+              "seed": 5,
+              "score": 2
+            },
+            "winner": "team-4"
+          },
+          {
+            "id": "match-3",
+            "matchNumber": 3,
+            "status": "completed",
+            "team1": {
+              "id": "team-2",
+              "name": "Velocity Crew",
+              "seed": 2,
+              "score": 3
+            },
+            "team2": {
+              "id": "team-7",
+              "name": "Midnight Wolves",
+              "seed": 7,
+              "score": 0
+            },
+            "winner": "team-2"
+          },
+          {
+            "id": "match-4",
+            "matchNumber": 4,
+            "status": "completed",
+            "team1": {
+              "id": "team-3",
+              "name": "Crimson Eagles",
+              "seed": 3,
+              "score": 2
+            },
+            "team2": {
+              "id": "team-6",
+              "name": "Frost Titans",
+              "seed": 6,
+              "score": 1
+            },
+            "winner": "team-3"
+          }
+        ]
+      },
+      {
+        "id": "round-2",
+        "name": "Round 2 (Semifinals)",
+        "number": 2,
+        "matches": [
+          {
+            "id": "match-5",
+            "matchNumber": 5,
+            "status": "completed",
+            "team1": {
+              "id": "team-1",
+              "name": "Phoenix Rising",
+              "seed": 1,
+              "score": 2
+            },
+            "team2": {
+              "id": "team-4",
+              "name": "Dragon Force",
+              "seed": 4,
+              "score": 1
+            },
+            "winner": "team-1"
+          },
+          {
+            "id": "match-6",
+            "matchNumber": 6,
+            "status": "in-progress",
+            "team1": {
+              "id": "team-2",
+              "name": "Velocity Crew",
+              "seed": 2,
+              "score": 1
+            },
+            "team2": {
+              "id": "team-3",
+              "name": "Crimson Eagles",
+              "seed": 3,
+              "score": 1
+            },
+            "winner": null
+          }
+        ]
+      },
+      {
+        "id": "round-3",
+        "name": "Round 3 (Finals)",
+        "number": 3,
+        "matches": [
+          {
+            "id": "match-7",
+            "matchNumber": 7,
+            "status": "pending",
+            "team1": {
+              "id": "team-1",
+              "name": "Phoenix Rising",
+              "seed": 1,
+              "score": null
+            },
+            "team2": {
+              "id": null,
+              "name": "TBD",
+              "seed": null,
+              "score": null
+            },
+            "winner": null
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,3 +1,4 @@
+import { Group, Team } from '@/types/draw';
 import { Button } from '../../../components/ui/button';
 import CompletedSelectionProgress from '../CompletedSelectionProgress';
 import SliderComponent from '../Slider';
@@ -6,10 +7,18 @@ import { Card } from '../ui/card';
 import { useState } from 'react';
 
 type Props = {
+  groupsCount: number[];
+  setGroupsCount: React.Dispatch<React.SetStateAction<number[]>>;
+  teamsPerGroup: number[];
+  setTeamsPerGroup: React.Dispatch<React.SetStateAction<number[]>>;
+  selectedTeams: Team[];
+  setSelectedTeams: React.Dispatch<React.SetStateAction<Team[]>>;
+  drawnGroups: Group[];
   setDrawnGroups: React.Dispatch<React.SetStateAction<Group[]>>;
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Menu = ({setDrawnGroups}:Props) => {
+const Menu = ({setDrawnGroups,setActiveTab}:Props) => {
   const [groupsCount, setGroupsCount] = useState<number[]>([2]);
   const [teamsPerGroup, setTeamsPerGroup] = useState<number[]>([4]);
   const [selectedTeams, setSelectedTeams] = useState<Team[]>([]);
@@ -68,7 +77,7 @@ const Menu = ({setDrawnGroups}:Props) => {
 
       <Button onClick={handleDrawGroups}>Sortear grupos</Button>
       <Button onClick={handleReshuffle}>Re-sortear</Button>
-      <Button>Avançar para Mata-Mata</Button>
+      <Button onClick={() => setActiveTab('knockout')}>Avançar para Mata-Mata</Button>
     </Card>
   );
 };
