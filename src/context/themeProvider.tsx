@@ -1,43 +1,33 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import { useEffect, useMemo, useState } from 'react';
 
-import { DefaultTheme, ThemeProvider as StyledThemeProvider } from 'styled-components';
+import lightTheme from '@/themes/lightTheme';
+import darkTheme from '@/themes/darkTheme';
 
-import { themes } from '../themes';
-
-type ThemeContextType = {
-  theme: DefaultTheme;
-  setTheme: (theme: DefaultTheme) => void;
-};
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
-type ThemeProviderProps = {
-  children: ReactNode;
-};
-
-export const ThemeProviderContext = ({ children }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<DefaultTheme>(themes.darkTheme);
+function StyledThemeBridge({ children }: { children: React.ReactNode }) {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme && themes[storedTheme]) {
-      setTheme(themes[storedTheme]);
-    }
+    setMounted(true);
   }, []);
 
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      <StyledThemeProvider theme={theme}>{children}</StyledThemeProvider>
-    </ThemeContext.Provider>
-  );
-};
+  const selectedTheme = useMemo(() => {
+    return resolvedTheme === 'dark' ? darkTheme : lightTheme;
+  }, [resolvedTheme]);
 
-export const useTheme = (): ThemeContextType => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProviderContext');
-  }
-  return context;
-};
+  if (!mounted) return null;
+
+  return <StyledThemeProvider theme={selectedTheme}>{children}</StyledThemeProvider>;
+}
+
+export function AppThemeProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <NextThemesProvider attribute="class" defaultTheme="system" enableSystem>
+      <StyledThemeBridge>{children}</StyledThemeBridge>
+    </NextThemesProvider>
+  );
+}

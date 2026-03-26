@@ -1,13 +1,12 @@
-import { ThemeProviderContext } from "@/context/themeProvider";
-import "./globals.css"
+import { AppThemeProvider } from '@/context/themeProvider';
+import './globals.css';
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html suppressHydrationWarning>
       <body>
-        <ThemeProviderContext>
-          {children}
-        </ThemeProviderContext>
+        <AppThemeProvider>{children}</AppThemeProvider>
       </body>
     </html>
-  )
+  );
 }
