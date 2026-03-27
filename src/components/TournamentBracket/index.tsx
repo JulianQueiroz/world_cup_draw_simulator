@@ -2,38 +2,48 @@ import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { Card, CardContent } from '@/components/ui/card';
 import { Match, Tournament } from '@/types/knockout';
+import { TrophyIcon } from 'lucide-react';
 
 interface TournamentBracketProps {
   tournament: Tournament;
   setTournament: React.Dispatch<React.SetStateAction<Tournament | null>>;
 }
 
-function MatchCard({ match, onSelectWinner }: { match: Match; onSelectWinner: (matchId: string, teamId: string) => void }) {
+function MatchCard({ match, onSelectWinner, isLastRound }: { match: Match; onSelectWinner: (matchId: string, teamId: string) => void; isLastRound: boolean }) {
   const getTeamHighlight = (teamId: string | null, winner: string | null) => {
     if (!winner || !teamId) return 'bg-muted';
-    return teamId === winner ? 'bg-green-100 dark:bg-green-900/30' : 'bg-muted';
+    return teamId === winner ? 'bg-green-200 font-bold dark:bg-green-900/30' : 'bg-muted';
   };
+  const isChampion = (teamId: string | null) => isLastRound && !!match.winner && teamId === match.winner;
 
   return (
-    <Card className="w-48">
-      <CardContent className="p-0">
-        <div className="divide-y divide-border">
-          {/* Team 1 */}
-          <button
-            onClick={() => onSelectWinner(match.id, match.team1.id)}
-            className={cn('w-full px-3 py-3 text-left hover:bg-accent transition', getTeamHighlight(match.team1.id, match.winner))}>
-            <span className="mr-2">{match.team1.flag}</span>
-            {match.team1.name}
-          </button>
+    <Card className="w-full">
+      <CardContent className="p-0 bg-white shadow-sm border border-gray-200">
+        {/* team 1 */}
+        <button
+          onClick={() => onSelectWinner(match.id, match.team1.id)}
+          className={cn('w-full px-4 py-3 text-left divide-y divide-gray-100', getTeamHighlight(match.team1.id, match.winner))}>
+          <div className="flex justify-between">
+            <div>
+              <span className="mr-2">{match.team1.flag}</span>
+              {match.team1.name}
+            </div>
+            {isChampion(match.team1.id) && <TrophyIcon />}
+          </div>
+        </button>
 
-          {/* Team 2 */}
-          <button
-            onClick={() => onSelectWinner(match.id, match.team2.id)}
-            className={cn('w-full px-3 py-3 text-left hover:bg-accent transition', getTeamHighlight(match.team2.id, match.winner))}>
-            <span className="mr-2">{match.team2.flag}</span>
-            {match.team2.name}
-          </button>
-        </div>
+        {/* team 2 */}
+        <button
+          onClick={() => onSelectWinner(match.id, match.team2.id)}
+          className={cn('w-full px-4 py-3 text-left divide-y divide-gray-100', getTeamHighlight(match.team2.id, match.winner))}>
+          <div className="flex justify-between">
+            <div>
+              <span className="mr-2">{match.team2.flag}</span>
+              {match.team2.name}
+            </div>
+            {isChampion(match.team2.id) && <TrophyIcon />}
+          </div>
+        </button>
       </CardContent>
     </Card>
   );
@@ -75,25 +85,22 @@ export function TournamentBracket({ tournament, setTournament }: TournamentBrack
   }
 
   return (
-    <div className="w-full">
-      {/* Bracket Container */}
-      <div className="overflow-x-auto pb-6">
-        <div className="inline-flex gap-12 min-w-min px-4">
+    <div className="">
+      {/* bracket container */}
+      <div className="overflow-x-auto pb-6 flex justify-center sm:overflow-x-auto">
+        <div className="flex flex-col gap-0 w-full sm:inline-flex sm:flex-row sm:gap-12 sm:min-w-min sm:px-4">
           {tournament.rounds.map((round) => (
-            <div key={round.id} className="flex flex-col">
-              {/* Round Header */}
+            <div key={round.id} className="flex flex-col border-l-2 border-gray-200 pl-3 ml-2 pb-5 last:pb-0 sm:border-l-0 sm:pl-0 sm:ml-0 sm:pb-0">
+              {/* round header */}
               <div className="mb-6">
                 <h2 className="text-sm font-bold text-slate-700 uppercase tracking-widest">{round.name}</h2>
-                <p className="text-xs text-slate-500 mt-1">
-                  {round.matches.length} match{round.matches.length !== 1 ? 'es' : ''}
-                </p>
               </div>
 
-              {/* Matches Container */}
+              {/* matches container */}
               <div className="flex flex-col flex-1 gap-6 justify-center">
                 {round.matches.map((match) => (
-                  <div key={match.id} className="transform transition-transform duration-200 hover:scale-105">
-                    <MatchCard match={match} onSelectWinner={handleSelectWinner} />
+                  <div key={match.id} className="transform">
+                    <MatchCard isLastRound={isLastRound(round.number)} match={match} onSelectWinner={handleSelectWinner} />
                   </div>
                 ))}
               </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ContentWrapper, Main } from './style';
+import { ContentWrapper, GroupsLayout, Main } from './style';
 import SwitchTabs from '@/components/SwitchTabs';
 import Menu from '@/components/Menu';
 import Groups from '@/components/Groups';
@@ -9,7 +9,6 @@ import { TournamentBracket } from '@/components/TournamentBracket';
 import type { Tournament } from '@/types/knockout';
 import { Group, Team } from '@/types/draw';
 import { generateTournamentFromGroups } from '@/lib/knockout';
-
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState('groups');
@@ -46,19 +45,22 @@ const Home = () => {
 
         {activeTab === 'groups' && (
           <>
-            <Menu
-              groupsCount={groupsCount}
-              setGroupsCount={setGroupsCount}
-              teamsPerGroup={teamsPerGroup}
-              setTeamsPerGroup={setTeamsPerGroup}
-              selectedTeams={selectedTeams}
-              setSelectedTeams={setSelectedTeams}
-              drawnGroups={drawnGroups}
-              setDrawnGroups={setDrawnGroups}
-              setActiveTab={setActiveTab}
-            />
-
-            <Groups groups={drawnGroups} onGroupsChange={setDrawnGroups} />
+            {activeTab === 'groups' && (
+              <GroupsLayout>
+                <Menu
+                  groupsCount={groupsCount}
+                  setGroupsCount={setGroupsCount}
+                  teamsPerGroup={teamsPerGroup}
+                  setTeamsPerGroup={setTeamsPerGroup}
+                  selectedTeams={selectedTeams}
+                  setSelectedTeams={setSelectedTeams}
+                  drawnGroups={drawnGroups}
+                  setDrawnGroups={setDrawnGroups}
+                  setActiveTab={setActiveTab}
+                />
+                <Groups groups={drawnGroups} onGroupsChange={setDrawnGroups} />
+              </GroupsLayout>
+            )}
           </>
         )}
         {activeTab === 'knockout' && tournament && <TournamentBracket tournament={tournament} setTournament={setTournament} />}

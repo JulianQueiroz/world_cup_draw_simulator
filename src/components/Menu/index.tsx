@@ -73,11 +73,11 @@ const Menu = ({setDrawnGroups,setActiveTab}:Props) => {
 
       <TeamSelection selectedTeams={selectedTeams} setSelectedTeams={setSelectedTeams} maxTeams={maxTeams} />
 
-      <CompletedSelectionProgress selectedCount={selectedCount} maxTeams={maxTeams} />
+      <CompletedSelectionProgress  selectedCount={selectedCount} maxTeams={maxTeams} />
 
-      <Button onClick={handleDrawGroups}>Sortear grupos</Button>
-      <Button onClick={handleReshuffle}>Re-sortear</Button>
-      <Button onClick={() => setActiveTab('knockout')}>Avançar para Mata-Mata</Button>
+      <Button className='bg-green-600 hover:bg-green-700 text-white' onClick={handleDrawGroups}>Sortear grupos</Button>
+      <Button className='bg-green-100 text-green-700 hover:bg-green-200' onClick={() => setActiveTab('knockout')}>Avançar para Mata-Mata</Button>
+      <Button className='bg-gray-100 text-gray-700' onClick={handleReshuffle}>Re-sortear</Button>
     </Card>
   );
 };

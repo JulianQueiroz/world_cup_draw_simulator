@@ -13,7 +13,7 @@ const CompletedSelectionProgress = ({selectedCount, maxTeams}:Props) => {
     <Field className="w-full max-w-sm">
       <FieldLabel htmlFor="progress-upload">
         <span>{selectedCount}/{maxTeams}</span>
-        <span className="ml-auto">Teste</span>
+        <span className="ml-auto text-green-800">{selectedCount === maxTeams ? "Completo!" : ""}</span>
       </FieldLabel>
       <Progress value={progressValue}  id="progress-upload" />
     </Field>
