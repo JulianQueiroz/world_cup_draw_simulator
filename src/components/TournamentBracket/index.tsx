@@ -5,7 +5,7 @@ import { Match, Tournament } from '@/types/knockout';
 
 interface TournamentBracketProps {
   tournament: Tournament;
-  setTournament: React.Dispatch<React.SetStateAction<Tournament>>;
+  setTournament: React.Dispatch<React.SetStateAction<Tournament | null>>;
 }
 
 function MatchCard({ match, onSelectWinner }: { match: Match; onSelectWinner: (matchId: string, teamId: string) => void }) {
@@ -22,6 +22,7 @@ function MatchCard({ match, onSelectWinner }: { match: Match; onSelectWinner: (m
           <button
             onClick={() => onSelectWinner(match.id, match.team1.id)}
             className={cn('w-full px-3 py-3 text-left hover:bg-accent transition', getTeamHighlight(match.team1.id, match.winner))}>
+            <span className="mr-2">{match.team1.flag}</span>
             {match.team1.name}
           </button>
 
@@ -29,6 +30,7 @@ function MatchCard({ match, onSelectWinner }: { match: Match; onSelectWinner: (m
           <button
             onClick={() => onSelectWinner(match.id, match.team2.id)}
             className={cn('w-full px-3 py-3 text-left hover:bg-accent transition', getTeamHighlight(match.team2.id, match.winner))}>
+            <span className="mr-2">{match.team2.flag}</span>
             {match.team2.name}
           </button>
         </div>
@@ -37,7 +39,7 @@ function MatchCard({ match, onSelectWinner }: { match: Match; onSelectWinner: (m
   );
 }
 
-export function TournamentBracket({ tournament,setTournament }: TournamentBracketProps) {
+export function TournamentBracket({ tournament, setTournament }: TournamentBracketProps) {
   const totalRounds = useMemo(() => tournament.rounds.length, [tournament]);
 
   const isLastRound = useMemo(() => (roundNumber: number) => roundNumber === totalRounds, [totalRounds]);

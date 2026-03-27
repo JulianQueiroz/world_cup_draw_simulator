@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ContentWrapper, Main } from './style';
 import SwitchTabs from '@/components/SwitchTabs';
 import Menu from '@/components/Menu';
@@ -8,9 +8,8 @@ import Groups from '@/components/Groups';
 import { TournamentBracket } from '@/components/TournamentBracket';
 import type { Tournament } from '@/types/knockout';
 import { Group, Team } from '@/types/draw';
-import tournamentData from '@/data/knockout.json';
+import { generateTournamentFromGroups } from '@/lib/knockout';
 
-const initialTournament = tournamentData.tournament as Tournament;
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState('groups');
@@ -18,8 +17,28 @@ const Home = () => {
   const [teamsPerGroup, setTeamsPerGroup] = useState<number[]>([4]);
   const [selectedTeams, setSelectedTeams] = useState<Team[]>([]);
   const [drawnGroups, setDrawnGroups] = useState<Group[]>([]);
-  const [tournament, setTournament] = useState<Tournament>(initialTournament);
+  const [tournament, setTournament] = useState<Tournament | null>(null);
 
+  useEffect(() => {
+    if (drawnGroups.length > 0) {
+      localStorage.setItem('drawnGroups', JSON.stringify(drawnGroups));
+
+      const generatedTournament = generateTournamentFromGroups(drawnGroups, 2);
+      setTournament(generatedTournament);
+    }
+  }, [drawnGroups]);
+
+  useEffect(() => {
+    const savedGroups = localStorage.getItem('drawnGroups');
+
+    if (savedGroups) {
+      const parsedGroups: Group[] = JSON.parse(savedGroups);
+      setDrawnGroups(parsedGroups);
+
+      const generatedTournament = generateTournamentFromGroups(parsedGroups, 2);
+      setTournament(generatedTournament);
+    }
+  }, []);
   return (
     <Main>
       <ContentWrapper>
@@ -42,8 +61,8 @@ const Home = () => {
             <Groups groups={drawnGroups} onGroupsChange={setDrawnGroups} />
           </>
         )}
-
-        {activeTab === 'knockout' && <TournamentBracket tournament={tournament} setTournament={setTournament} />}
+        {activeTab === 'knockout' && tournament && <TournamentBracket tournament={tournament} setTournament={setTournament} />}
+        {activeTab === 'knockout' && !tournament && <div>Nenhum mata-mata gerado ainda.</div>}
       </ContentWrapper>
     </Main>
   );
