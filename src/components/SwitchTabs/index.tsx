@@ -1,13 +1,11 @@
-import { AppWindowIcon, CodeIcon, Menu } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
-import Groups from "../Groups"
-import { useState } from "react"
+import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
+
 type Props = {
   activeTab: string;
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
 };
+
 const SwitchTabs = ({activeTab,setActiveTab}:Props) => {
-    const [tab,setTab] = useState('groups')
     
     return(
     <Tabs value={activeTab} onValueChange={setActiveTab}>

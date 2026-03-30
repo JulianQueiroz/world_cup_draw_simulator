@@ -9,6 +9,7 @@ import {
   ComboboxValue,
 } from '@/components/ui/combobox';
 import data from '@/data/team.json';
+import { Team } from '@/types/draw';
 
 import React from 'react';
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
   setSelectedTeams: React.Dispatch<React.SetStateAction<Team[]>>;
   maxTeams: number;
 };
+
 const teamsData: Team[] = data.teams.map((team) => ({
   id: team.code,
   name: team.name,

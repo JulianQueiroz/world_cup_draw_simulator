@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Badge } from '@/components/ui/badge';
 import ComboboxComponent from './Combobox';
+import { Team } from '@/types/draw';
 
 type Props = {
   selectedTeams: Team[];

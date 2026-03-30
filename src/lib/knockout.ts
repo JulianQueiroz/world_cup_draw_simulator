@@ -21,10 +21,7 @@ function getQualifiedTeams(groups: Group[], qualifiedPerGroup = 2): KnockoutTeam
   );
 }
 
-export function generateTournamentFromGroups(
-  groups: Group[],
-  qualifiedPerGroup = 2,
-): Tournament {
+export function generateTournamentFromGroups(groups: Group[], qualifiedPerGroup = 2): Tournament {
   const qualifiedTeams = getQualifiedTeams(groups, qualifiedPerGroup);
 
   const rounds: Round[] = [];
@@ -76,7 +73,7 @@ export function generateTournamentFromGroups(
       id: null,
       name: 'TBD',
       score: null,
-      flag: ''
+      flag: '',
     }));
 
     roundNumber++;

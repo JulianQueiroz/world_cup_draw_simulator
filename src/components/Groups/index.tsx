@@ -7,98 +7,33 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  useDroppable,
-  DragOverlay,
   type DragEndEvent,
   type DragStartEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
-  useSortable,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { CSS } from '@dnd-kit/utilities';
-import { GripVertical } from 'lucide-react';
-import { StyledCardHeader } from './style';
+import { Group, Team } from '@/types/draw';
+import TeamDragItem from './TeamDragItem';
+import GroupContainer from './GroupContainer';
+import { findGroupByTeamId, findTeamById } from '@/lib/groups';
+import TeamDragOverlay from './TeamDragOverlay';
 
 type Props = {
   groups: Group[];
   onGroupsChange: React.Dispatch<React.SetStateAction<Group[]>>;
 };
 
-function GroupContainer({
-  group,
-  children,
-}: {
-  group: Group;
-  children: React.ReactNode;
-}) {
-  const { setNodeRef } = useDroppable({
-    id: group.id,
-  });
-
-  return (
-    <Card ref={setNodeRef} className="mx-2 w-full max-w-sm pt-0">
-      <CardHeader className="bg-green-600">
-        <CardTitle className='py-1 font-bold text-white'>{group.name}</CardTitle>
-      </CardHeader>
-      <CardContent>{children}</CardContent>
-    </Card>
-  );
-}
-
-function SortableItem({ team }: { team: Team }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: team.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <li
-      ref={setNodeRef}
-      style={style}
-      className="mb-2 flex items-center justify-between rounded bg-muted p-2"
-    >
-      <span>
-        {team.flag} {team.name}
-      </span>
-
-      <GripVertical
-        {...attributes}
-        {...listeners}
-        className="h-4 w-4 cursor-grab opacity-60"
-      />
-    </li>
-  );
-}
-
 const Groups = ({ groups, onGroupsChange }: Props) => {
   const sensors = useSensors(useSensor(PointerSensor));
   const [activeTeam, setActiveTeam] = useState<Team | null>(null);
 
-  function findGroupByTeamId(teamId: string) {
-    return groups.find((group) =>
-      group.teams.some((team) => team.id === teamId),
-    );
-  }
-
-  function findTeamById(teamId: string) {
-    for (const group of groups) {
-      const team = group.teams.find((team) => team.id === teamId);
-      if (team) return team;
-    }
-    return null;
-  }
-
   function handleDragStart(event: DragStartEvent) {
     const activeId = String(event.active.id);
-    const team = findTeamById(activeId);
+    const team = findTeamById(groups,activeId);
     setActiveTeam(team ?? null);
   }
 
@@ -117,9 +52,8 @@ const Groups = ({ groups, onGroupsChange }: Props) => {
     const activeId = String(active.id);
     const overId = String(over.id);
 
-    const sourceGroup = findGroupByTeamId(activeId);
-    const targetGroup =
-      findGroupByTeamId(overId) || groups.find((group) => group.id === overId);
+    const sourceGroup = findGroupByTeamId(groups,activeId);
+    const targetGroup = findGroupByTeamId(groups,overId) || groups.find((group) => group.id === overId);
 
     if (!sourceGroup || !targetGroup) {
       setActiveTeam(null);
@@ -205,24 +139,14 @@ const Groups = ({ groups, onGroupsChange }: Props) => {
             >
               <ul>
                 {group.teams.map((team) => (
-                  <SortableItem key={team.id} team={team} />
+                  <TeamDragItem key={team.id} team={team} />
                 ))}
               </ul>
             </SortableContext>
           </GroupContainer>
         ))}
       </GroupsContent>
-
-      <DragOverlay>
-        {activeTeam ? (
-          <div className="flex items-center justify-between rounded bg-muted p-2 shadow-lg">
-            <span>
-              {activeTeam.flag} {activeTeam.name}
-            </span>
-            <GripVertical className="h-4 w-4 opacity-60" />
-          </div>
-        ) : null}
-      </DragOverlay>
+      <TeamDragOverlay activeTeam={activeTeam}/> {/* faz com que o item flutue entre containeres */}
     </DndContext>
   );
 };

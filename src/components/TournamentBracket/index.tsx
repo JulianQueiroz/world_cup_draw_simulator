@@ -1,52 +1,10 @@
 import { useMemo } from 'react';
-import { cn } from '@/lib/utils';
-import { Card, CardContent } from '@/components/ui/card';
-import { Match, Tournament } from '@/types/knockout';
-import { TrophyIcon } from 'lucide-react';
+import { Tournament } from '@/types/knockout';
+import MatchCard from '../Knockouts/MatchCard';
 
-interface TournamentBracketProps {
+type TournamentBracketProps = {
   tournament: Tournament;
   setTournament: React.Dispatch<React.SetStateAction<Tournament | null>>;
-}
-
-function MatchCard({ match, onSelectWinner, isLastRound }: { match: Match; onSelectWinner: (matchId: string, teamId: string) => void; isLastRound: boolean }) {
-  const getTeamHighlight = (teamId: string | null, winner: string | null) => {
-    if (!winner || !teamId) return 'bg-muted';
-    return teamId === winner ? 'bg-green-200 font-bold dark:bg-green-900/30' : 'bg-muted';
-  };
-  const isChampion = (teamId: string | null) => isLastRound && !!match.winner && teamId === match.winner;
-
-  return (
-    <Card className="w-full">
-      <CardContent className="p-0 bg-white shadow-sm border border-gray-200">
-        {/* team 1 */}
-        <button
-          onClick={() => onSelectWinner(match.id, match.team1.id)}
-          className={cn('w-full px-4 py-3 text-left divide-y divide-gray-100', getTeamHighlight(match.team1.id, match.winner))}>
-          <div className="flex justify-between">
-            <div>
-              <span className="mr-2">{match.team1.flag}</span>
-              {match.team1.name}
-            </div>
-            {isChampion(match.team1.id) && <TrophyIcon />}
-          </div>
-        </button>
-
-        {/* team 2 */}
-        <button
-          onClick={() => onSelectWinner(match.id, match.team2.id)}
-          className={cn('w-full px-4 py-3 text-left divide-y divide-gray-100', getTeamHighlight(match.team2.id, match.winner))}>
-          <div className="flex justify-between">
-            <div>
-              <span className="mr-2">{match.team2.flag}</span>
-              {match.team2.name}
-            </div>
-            {isChampion(match.team2.id) && <TrophyIcon />}
-          </div>
-        </button>
-      </CardContent>
-    </Card>
-  );
 }
 
 export function TournamentBracket({ tournament, setTournament }: TournamentBracketProps) {
@@ -56,6 +14,7 @@ export function TournamentBracket({ tournament, setTournament }: TournamentBrack
 
   function handleSelectWinner(matchId: string, teamId: string) {
     setTournament((prev) => {
+      if(!prev) return prev
       const next = structuredClone(prev);
 
       for (const round of next.rounds) {

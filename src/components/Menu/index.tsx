@@ -1,19 +1,13 @@
 import { Group, Team } from '@/types/draw';
-import { Button } from '../../../components/ui/button';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import CompletedSelectionProgress from '../CompletedSelectionProgress';
 import SliderComponent from '../Slider';
 import TeamSelection from '../TeamSelection';
-import { Card } from '../ui/card';
 import { useState } from 'react';
+import shuffleArray from '@/lib/utils';
 
 type Props = {
-  groupsCount: number[];
-  setGroupsCount: React.Dispatch<React.SetStateAction<number[]>>;
-  teamsPerGroup: number[];
-  setTeamsPerGroup: React.Dispatch<React.SetStateAction<number[]>>;
-  selectedTeams: Team[];
-  setSelectedTeams: React.Dispatch<React.SetStateAction<Team[]>>;
-  drawnGroups: Group[];
   setDrawnGroups: React.Dispatch<React.SetStateAction<Group[]>>;
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -50,21 +44,6 @@ const Menu = ({setDrawnGroups,setActiveTab}:Props) => {
     setDrawnGroups(groups);
   }
 
-  function handleReshuffle() {
-    handleDrawGroups();
-  }
-
-  function shuffleArray<T>(array: T[]) {
-    const copied = [...array];
-
-    for (let i = copied.length - 1; i > 0; i--) {
-      const randomIndex = Math.floor(Math.random() * (i + 1));
-      [copied[i], copied[randomIndex]] = [copied[randomIndex], copied[i]];
-    }
-
-    return copied;
-  }
-
   return (
     <Card className="mx-auto flex w-full max-w-sm flex-col p-5">
       <SliderComponent title="Número de grupos" sliderValue={groupsCount} onChange={setGroupsCount} />
@@ -77,7 +56,7 @@ const Menu = ({setDrawnGroups,setActiveTab}:Props) => {
 
       <Button className='bg-green-600 hover:bg-green-700 text-white' onClick={handleDrawGroups}>Sortear grupos</Button>
       <Button className='bg-green-100 text-green-700 hover:bg-green-200' onClick={() => setActiveTab('knockout')}>Avançar para Mata-Mata</Button>
-      <Button className='bg-gray-100 text-gray-700' onClick={handleReshuffle}>Re-sortear</Button>
+      <Button className='bg-gray-100 text-gray-700' onClick={handleDrawGroups}>Re-sortear</Button>
     </Card>
   );
 };
