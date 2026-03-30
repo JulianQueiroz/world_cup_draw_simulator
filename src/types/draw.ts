@@ -2,7 +2,7 @@ export type Team = {
   id: string;
   name: string;
   code: string;
-  flag: string;
+  iso: string;
   confederation: string;
 };
 

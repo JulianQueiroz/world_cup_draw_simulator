@@ -14,7 +14,7 @@ function getQualifiedTeams(groups: Group[], qualifiedPerGroup = 2): KnockoutTeam
     group.teams.slice(0, qualifiedPerGroup).map((team, index) => ({
       id: team.id,
       name: team.name,
-      flag: team.flag,
+      iso: team.iso,
       seed: index + 1,
       score: null,
     }))

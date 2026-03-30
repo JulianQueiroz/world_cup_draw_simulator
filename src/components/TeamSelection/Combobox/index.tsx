@@ -1,3 +1,4 @@
+import ReactCountryFlag from 'react-country-flag';
 import {
   Combobox,
   ComboboxChips,
@@ -22,7 +23,7 @@ const teamsData: Team[] = data.teams.map((team) => ({
   id: team.code,
   name: team.name,
   code: team.code,
-  flag: team.flag,
+  iso: team.iso,
   confederation: team.confederation,
 }));
 
@@ -49,7 +50,7 @@ const ComboboxComponent = ({ selectedTeams, setSelectedTeams, maxTeams }: Props)
         onValueChange={(values) => handleValueChange(values as string[])}>
         <ComboboxChips ref={anchor} className="w-full">
           <ComboboxValue>
-            {() => <ComboboxChipsInput placeholder="Pesquise por nome ou sigla" value={search} onChange={(e) => setSearch(e.target.value)} />}
+            {() => <ComboboxChipsInput placeholder="Pesquise por pela seleção ou sigla" value={search} onChange={(e) => setSearch(e.target.value)} />}
           </ComboboxValue>
         </ComboboxChips>
 
@@ -59,7 +60,7 @@ const ComboboxComponent = ({ selectedTeams, setSelectedTeams, maxTeams }: Props)
           <ComboboxList>
             {(team) => (
               <ComboboxItem key={team.code} value={team.code}>
-                {team.flag} {team.name} ({team.code})
+                <ReactCountryFlag countryCode={team.iso} svg style={{ width: '1.2em', height: '1.2em' }} /> {team.name} ({team.code})
               </ComboboxItem>
             )}
           </ComboboxList>

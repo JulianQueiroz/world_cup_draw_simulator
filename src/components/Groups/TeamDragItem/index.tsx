@@ -2,6 +2,7 @@ import { Team } from "@/types/draw";
 import { useSortable } from "@dnd-kit/sortable";
 import { GripVertical } from "lucide-react";
 import { CSS } from '@dnd-kit/utilities';
+import ReactCountryFlag from 'react-country-flag';
 
 export default function TeamDragItem({ team }: { team: Team }) { // componente arrastavel
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -19,7 +20,7 @@ export default function TeamDragItem({ team }: { team: Team }) { // componente a
       className="mb-2 flex items-center justify-between rounded bg-muted p-2"
     >
       <span>
-        {team.flag} {team.name}
+        <ReactCountryFlag countryCode={team.iso} svg style={{ width: '1.2em', height: '1.2em' }} /> {team.name}
       </span>
 
       <GripVertical

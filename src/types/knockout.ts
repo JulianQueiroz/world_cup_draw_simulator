@@ -4,7 +4,7 @@ export type KnockoutTeam = {
   id: string | null;
   name: string;
   seed?: number | null;
-  flag?: string;
+  iso?: string;
 };
 
 export type Match = {

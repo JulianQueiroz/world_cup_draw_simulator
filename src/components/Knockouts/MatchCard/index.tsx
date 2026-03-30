@@ -2,6 +2,7 @@ import { Card, CardContent } from "../../ui/card";
 import { cn } from "../../../lib/utils"
 import { Match } from "@/types/knockout";
 import { TrophyIcon } from "lucide-react";
+import ReactCountryFlag from "react-country-flag";
 
 type MatchCardProps = {
   match: Match;
@@ -25,7 +26,7 @@ export default function MatchCard({ match, onSelectWinner, isLastRound }: MatchC
           className={cn('w-full px-4 py-3 text-left divide-y divide-gray-100', getTeamHighlight(match.team1.id, match.winner))}>
           <div className="flex justify-between">
             <div>
-              <span className="mr-2">{match.team1.flag}</span>
+              <span className="mr-2"><ReactCountryFlag countryCode={match.team1.iso} svg style={{ width: '1.2em', height: '1.2em' }} /></span>
               {match.team1.name}
             </div>
             {isChampion(match.team1.id) && <TrophyIcon />}
@@ -38,7 +39,7 @@ export default function MatchCard({ match, onSelectWinner, isLastRound }: MatchC
           className={cn('w-full px-4 py-3 text-left divide-y divide-gray-100', getTeamHighlight(match.team2.id, match.winner))}>
           <div className="flex justify-between">
             <div>
-              <span className="mr-2">{match.team2.flag}</span>
+              <span className="mr-2"><ReactCountryFlag countryCode={match.team2.iso} svg style={{ width: '1.2em', height: '1.2em' }} /></span>
               {match.team2.name}
             </div>
             {isChampion(match.team2.id) && <TrophyIcon />}

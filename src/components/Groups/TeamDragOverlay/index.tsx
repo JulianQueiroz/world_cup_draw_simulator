@@ -1,6 +1,7 @@
 import { DragOverlay } from '@dnd-kit/core';
 import { GripVertical } from 'lucide-react';
 import { Team } from '@/types/draw';
+import ReactCountryFlag from 'react-country-flag';
 
 type Props = { activeTeam: Team | null };
 
@@ -9,7 +10,7 @@ const TeamDragOverlay = ({ activeTeam }: Props) => (
   {activeTeam ? (
     <div className="flex items-center justify-between rounded bg-muted p-2 shadow-lg">
       <span>
-        {activeTeam.flag} {activeTeam.name}
+        <ReactCountryFlag countryCode={activeTeam.iso} svg style={{ width: '1.2em', height: '1.2em' }} /> {activeTeam.name}
       </span>
       <GripVertical className="h-4 w-4 opacity-60" />
     </div>

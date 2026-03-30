@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Badge } from '../../components/ui/badge';
 import ComboboxComponent from './Combobox';
 import { Team } from '../../types/draw';
+import ReactCountryFlag from 'react-country-flag';
 
 type Props = {
   selectedTeams: Team[];
@@ -23,7 +24,7 @@ const TeamSelection = ({selectedTeams,setSelectedTeams,maxTeams}: Props) => {
             variant="outline"
             className="cursor-pointer"
             onClick={() => setSelectedTeams((prev) => prev.filter((item) => item.code !== team.code))}>
-            {team.flag} {team.name}
+            <ReactCountryFlag countryCode={team.iso} svg style={{ width: '1.2em', height: '1.2em' }} /> {team.name}
           </Badge>
         ))}
       </div>
