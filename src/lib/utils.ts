@@ -1,11 +1,11 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
-export default function shuffleArray<T>(array: T[]) {
+export function shuffleArray<T>(array: T[]) {
   const copied = [...array];
 
   for (let i = copied.length - 1; i > 0; i--) {
