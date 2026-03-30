@@ -9,11 +9,11 @@ import { TournamentBracket } from '@/components/TournamentBracket';
 import type { Tournament } from '@/types/knockout';
 import { Group } from '@/types/draw';
 import { generateTournamentFromGroups } from '@/lib/knockout';
+import { useStore } from '@/lib/store';
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState('groups');
-  const [drawnGroups, setDrawnGroups] = useState<Group[]>([]);
-  const [tournament, setTournament] = useState<Tournament | null>(null);
+  const {groups, setGroups, tournament, setTournament} = useStore()
   const showKnockout = activeTab === 'knockout';
 
 
@@ -23,12 +23,12 @@ const Home = () => {
   } 
 
   useEffect(() => {
-    if (drawnGroups.length > 0) syncTournament(drawnGroups)
-  }, [drawnGroups]);
+    if (groups.length > 0) syncTournament(groups)
+  }, [groups]);
 
   useEffect(() => {
     const saved = localStorage.getItem('drawnGroups')
-    if (saved) setDrawnGroups(JSON.parse(saved))
+    if (saved) setGroups(JSON.parse(saved))
   }, []);
 
   return (
@@ -38,13 +38,12 @@ const Home = () => {
             {activeTab === 'groups' && (
               <GroupsLayout>
                 <Menu
-                  setDrawnGroups={setDrawnGroups}
                   setActiveTab={setActiveTab}
                 />
-                <Groups groups={drawnGroups} onGroupsChange={setDrawnGroups} />
+                <Groups />
               </GroupsLayout>
             )}
-        {showKnockout && tournament && <TournamentBracket tournament={tournament} setTournament={setTournament} />}
+        {showKnockout && tournament && <TournamentBracket/>}
         {showKnockout && !tournament && <div>Nenhum mata-mata gerado ainda.</div>}
       </ContentWrapper>
     </Main>

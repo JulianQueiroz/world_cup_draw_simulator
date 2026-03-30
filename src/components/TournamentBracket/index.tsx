@@ -1,21 +1,17 @@
 import { useMemo } from 'react';
-import { Tournament } from '@/types/knockout';
 import MatchCard from '../Knockouts/MatchCard';
+import { useStore } from '@/lib/store';
 
-type TournamentBracketProps = {
-  tournament: Tournament;
-  setTournament: React.Dispatch<React.SetStateAction<Tournament | null>>;
-}
-
-export function TournamentBracket({ tournament, setTournament }: TournamentBracketProps) {
+export function TournamentBracket() {
+  const { tournament, setTournament } = useStore();
+  if (!tournament) return null;
   const totalRounds = useMemo(() => tournament.rounds.length, [tournament]);
 
   const isLastRound = useMemo(() => (roundNumber: number) => roundNumber === totalRounds, [totalRounds]);
 
   function handleSelectWinner(matchId: string, teamId: string) {
-    setTournament((prev) => {
-      if(!prev) return prev
-      const next = structuredClone(prev);
+      if(!tournament) return
+      const next = structuredClone(tournament);
 
       for (const round of next.rounds) {
         for (const match of round.matches) {
@@ -39,8 +35,7 @@ export function TournamentBracket({ tournament, setTournament }: TournamentBrack
         }
       }
 
-      return next;
-    });
+      setTournament(next);
   }
 
   return (

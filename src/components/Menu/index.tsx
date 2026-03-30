@@ -6,13 +6,14 @@ import SliderComponent from '../Slider';
 import TeamSelection from '../TeamSelection';
 import { useState } from 'react';
 import shuffleArray from '@/lib/utils';
+import { useStore } from '@/lib/store';
 
 type Props = {
-  setDrawnGroups: React.Dispatch<React.SetStateAction<Group[]>>;
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Menu = ({setDrawnGroups,setActiveTab}:Props) => {
+const Menu = ({setActiveTab}:Props) => {
+  const {setGroups} = useStore()
   const [groupsCount, setGroupsCount] = useState<number[]>([2]);
   const [teamsPerGroup, setTeamsPerGroup] = useState<number[]>([4]);
   const [selectedTeams, setSelectedTeams] = useState<Team[]>([]);
@@ -41,7 +42,7 @@ const Menu = ({setDrawnGroups,setActiveTab}:Props) => {
       }
     }
 
-    setDrawnGroups(groups);
+    setGroups(groups);
   }
 
   return (

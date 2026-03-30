@@ -16,24 +16,20 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useState } from 'react';
-import { Group, Team } from '@/types/draw';
+import { Team } from '@/types/draw';
 import TeamDragItem from './TeamDragItem';
 import GroupContainer from './GroupContainer';
 import { findGroupByTeamId, findTeamById } from '@/lib/groups';
 import TeamDragOverlay from './TeamDragOverlay';
+import { useStore } from '@/lib/store';
 
-type Props = {
-  groups: Group[];
-  onGroupsChange: React.Dispatch<React.SetStateAction<Group[]>>;
-};
-
-const Groups = ({ groups, onGroupsChange }: Props) => {
+const Groups = () => {
+  const { groups, setGroups } = useStore();
   const sensors = useSensors(useSensor(PointerSensor));
   const [activeTeam, setActiveTeam] = useState<Team | null>(null);
 
   function handleDragStart(event: DragStartEvent) {
-    const activeId = String(event.active.id);
-    const team = findTeamById(groups,activeId);
+    const team = findTeamById(groups, String(event.active.id));
     setActiveTeam(team ?? null);
   }
 
@@ -52,8 +48,8 @@ const Groups = ({ groups, onGroupsChange }: Props) => {
     const activeId = String(active.id);
     const overId = String(over.id);
 
-    const sourceGroup = findGroupByTeamId(groups,activeId);
-    const targetGroup = findGroupByTeamId(groups,overId) || groups.find((group) => group.id === overId);
+    const sourceGroup = findGroupByTeamId(groups, activeId);
+    const targetGroup = findGroupByTeamId(groups, overId) || groups.find((g) => g.id === overId);
 
     if (!sourceGroup || !targetGroup) {
       setActiveTeam(null);
@@ -61,12 +57,12 @@ const Groups = ({ groups, onGroupsChange }: Props) => {
     }
 
     if (sourceGroup.id === targetGroup.id) {
-      const oldIndex = sourceGroup.teams.findIndex((team) => team.id === activeId);
-      const newIndex = sourceGroup.teams.findIndex((team) => team.id === overId);
+      const oldIndex = sourceGroup.teams.findIndex((t) => t.id === activeId);
+      const newIndex = sourceGroup.teams.findIndex((t) => t.id === overId);
 
       if (oldIndex !== -1 && newIndex !== -1) {
-        onGroupsChange((prev) =>
-          prev.map((group) =>
+        setGroups(
+          groups.map((group) =>
             group.id === sourceGroup.id
               ? { ...group, teams: arrayMove(group.teams, oldIndex, newIndex) }
               : group,
@@ -78,47 +74,38 @@ const Groups = ({ groups, onGroupsChange }: Props) => {
       return;
     }
 
-    onGroupsChange((prev) => {
-      const nextGroups = [...prev];
+    const nextGroups = [...groups];
 
-      const sourceIndex = nextGroups.findIndex(
-        (group) => group.id === sourceGroup.id,
-      );
-      const targetIndex = nextGroups.findIndex(
-        (group) => group.id === targetGroup.id,
-      );
+    const sourceIndex = nextGroups.findIndex((g) => g.id === sourceGroup.id);
+    const targetIndex = nextGroups.findIndex((g) => g.id === targetGroup.id);
 
-      if (sourceIndex === -1 || targetIndex === -1) return prev;
+    if (sourceIndex === -1 || targetIndex === -1) {
+      setActiveTeam(null);
+      return;
+    }
 
-      const sourceTeams = [...nextGroups[sourceIndex].teams];
-      const targetTeams = [...nextGroups[targetIndex].teams];
+    const sourceTeams = [...nextGroups[sourceIndex].teams];
+    const targetTeams = [...nextGroups[targetIndex].teams];
 
-      const movingTeamIndex = sourceTeams.findIndex((team) => team.id === activeId);
-      if (movingTeamIndex === -1) return prev;
+    const movingTeamIndex = sourceTeams.findIndex((t) => t.id === activeId);
+    if (movingTeamIndex === -1) {
+      setActiveTeam(null);
+      return;
+    }
 
-      const [movingTeam] = sourceTeams.splice(movingTeamIndex, 1);
+    const [movingTeam] = sourceTeams.splice(movingTeamIndex, 1);
+    const overTeamIndex = targetTeams.findIndex((t) => t.id === overId);
 
-      const overTeamIndex = targetTeams.findIndex((team) => team.id === overId);
+    if (overTeamIndex === -1) {
+      targetTeams.push(movingTeam);
+    } else {
+      targetTeams.splice(overTeamIndex, 0, movingTeam);
+    }
 
-      if (overTeamIndex === -1) {
-        targetTeams.push(movingTeam);
-      } else {
-        targetTeams.splice(overTeamIndex, 0, movingTeam);
-      }
+    nextGroups[sourceIndex] = { ...nextGroups[sourceIndex], teams: sourceTeams };
+    nextGroups[targetIndex] = { ...nextGroups[targetIndex], teams: targetTeams };
 
-      nextGroups[sourceIndex] = {
-        ...nextGroups[sourceIndex],
-        teams: sourceTeams,
-      };
-
-      nextGroups[targetIndex] = {
-        ...nextGroups[targetIndex],
-        teams: targetTeams,
-      };
-
-      return nextGroups;
-    });
-
+    setGroups(nextGroups);
     setActiveTeam(null);
   }
 
@@ -146,7 +133,7 @@ const Groups = ({ groups, onGroupsChange }: Props) => {
           </GroupContainer>
         ))}
       </GroupsContent>
-      <TeamDragOverlay activeTeam={activeTeam}/> {/* faz com que o item flutue entre containeres */}
+      <TeamDragOverlay activeTeam={activeTeam} />
     </DndContext>
   );
 };
