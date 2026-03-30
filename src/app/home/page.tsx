@@ -31,7 +31,7 @@ const Home = () => {
   }, []);
 
   return (
-    <Main>
+    <Main className='dark:bg-zinc-900 text-black dark:text-white'>
       <ContentWrapper>
         <SwitchTabs activeTab={activeTab} setActiveTab={setActiveTab} />
             {activeTab === 'groups' && (
