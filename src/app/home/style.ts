@@ -17,7 +17,6 @@ const ContentWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.gap.xl};
   box-sizing: border-box;
   align-items: center;
 `;

@@ -7,9 +7,9 @@ import {
   ComboboxItem,
   ComboboxList,
   ComboboxValue,
-} from '@/components/ui/combobox';
-import data from '@/data/team.json';
-import { Team } from '@/types/draw';
+} from '../../../components/ui/combobox';
+import data from '../../../data/team.json';
+import { Team } from '../../../types/draw';
 
 import React from 'react';
 type Props = {

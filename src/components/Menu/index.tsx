@@ -1,12 +1,12 @@
-import { Group, Team } from '@/types/draw';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Group, Team } from '../../types/draw';
 import CompletedSelectionProgress from '../CompletedSelectionProgress';
 import SliderComponent from '../Slider';
 import TeamSelection from '../TeamSelection';
 import { useState } from 'react';
-import shuffleArray from '@/lib/utils';
-import { useStore } from '@/lib/store';
+import {shuffleArray} from '../../lib/utils';
+import { useStore } from '../../lib/store';
+import { Button } from '../ui/button';
+import { Card } from '../ui/card';
 
 type Props = {
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;

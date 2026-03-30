@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { ContentWrapper, GroupsLayout, Main } from './style';
-import SwitchTabs from '@/components/SwitchTabs';
-import Menu from '@/components/Menu';
-import Groups from '@/components/Groups';
-import { TournamentBracket } from '@/components/TournamentBracket';
-import type { Tournament } from '@/types/knockout';
-import { Group } from '@/types/draw';
-import { generateTournamentFromGroups } from '@/lib/knockout';
-import { useStore } from '@/lib/store';
+import { TournamentBracket } from '../../components/TournamentBracket';
+import { useStore } from '../../lib/store';
+import SwitchTabs from '../../components/SwitchTabs'
+import Menu from '../../components/Menu';
+import { Group } from '../../types/draw';
+import Groups from '../../components/Groups';
+import { generateTournamentFromGroups } from '../../lib/knockout';
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState('groups');

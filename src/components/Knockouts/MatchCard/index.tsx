@@ -1,5 +1,5 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { Card, CardContent } from "../../ui/card";
+import { cn } from "../../../lib/utils"
 import { Match } from "@/types/knockout";
 import { TrophyIcon } from "lucide-react";
 
