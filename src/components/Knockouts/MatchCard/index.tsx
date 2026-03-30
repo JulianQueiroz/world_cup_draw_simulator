@@ -12,13 +12,13 @@ type MatchCardProps = {
 export default function MatchCard({ match, onSelectWinner, isLastRound }: MatchCardProps) {
   const getTeamHighlight = (teamId: string | null, winner: string | null) => {
     if (!winner || !teamId) return 'bg-muted';
-    return teamId === winner ? 'bg-green-200 font-bold dark:bg-green-900/30' : 'bg-muted';
+    return teamId === winner ? 'bg-green-200 font-bold dark:bg-green dark:text-black' : 'bg-muted';
   };
   const isChampion = (teamId: string | null) => isLastRound && !!match.winner && teamId === match.winner;
 
   return (
     <Card className="w-full">
-      <CardContent className="p-0 bg-white shadow-sm border border-gray-200">
+      <CardContent className="p-0 bg-white shadow-sm border border-gray-200 dark:border-0">
         {/* time 1 */}
         <button
           onClick={() => match.team1.id && onSelectWinner(match.id, match.team1.id)}

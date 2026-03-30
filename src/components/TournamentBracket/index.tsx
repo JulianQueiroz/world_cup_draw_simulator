@@ -39,15 +39,15 @@ export function TournamentBracket() {
   }
 
   return (
-    <div className="">
+    <div className="mt-5">
       {/* bracket container */}
       <div className="overflow-x-auto pb-6 flex justify-center sm:overflow-x-auto">
         <div className="flex flex-col gap-0 w-full sm:inline-flex sm:flex-row sm:gap-12 sm:min-w-min sm:px-4">
           {tournament.rounds.map((round) => (
-            <div key={round.id} className="flex flex-col border-l-2 border-gray-200 pl-3 ml-2 pb-5 last:pb-0 sm:border-l-0 sm:pl-0 sm:ml-0 sm:pb-0">
+            <div key={round.id} className="flex flex-col border-l-2 border-gray-200 dark:border-none pl-3 ml-2 pb-5 last:pb-0 sm:border-l-0 sm:pl-0 sm:ml-0 sm:pb-0">
               {/* round header */}
               <div className="mb-6">
-                <h2 className="text-sm font-bold text-slate-700 uppercase tracking-widest">{round.name}</h2>
+                <h2 className="text-sm font-bold uppercase tracking-widest">{round.name}</h2>
               </div>
 
               {/* matches container */}

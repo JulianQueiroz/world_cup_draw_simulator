@@ -21,13 +21,12 @@ const ContentWrapper = styled.div`
   align-items: center;
 `;
 
-// Adicione este novo componente:
 const GroupsLayout = styled.div`
   width: 100%;
   display: flex;
-  align-items: flex-start;  /* ← chave: alinha pelo topo, não estica */
+  align-items: flex-start; 
   gap: 1.5rem;
-
+  margin-top:2em;
   @media (max-width: 768px) {
     flex-direction: column;
   }
