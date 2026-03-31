@@ -30,4 +30,4 @@ src/
 
 ```
 ## Decisões tecnicas
-As decisões tecnicas tomadas, bem como a arquitetura do projeto estão elucidadas nesse arquivo: [Arquitetura](./docs/architecture.md)
+As decisões tecnicas tomadas, bem como a arquitetura do projeto estão elucidadas nesse arquivo: [Arquitetura](./src/docs/architecture.md)
