@@ -163,7 +163,7 @@ const Menu = ({ setActiveTab }: Props) => {
   }
 
   return (
-    <Card className="mx-auto flex w-full max-w-sm flex-col gap-2 p-5">
+    <Card className="mx-auto flex w-full max-w-sm flex-col gap-2 p-5 ">
       <SliderComponent
         title="Número de grupos"
         sliderValue={groupsCount}

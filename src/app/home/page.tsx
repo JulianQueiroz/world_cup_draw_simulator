@@ -84,7 +84,7 @@ const Home = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.2 }}>
-              {tournament ? <TournamentBracket /> : <div>Nenhum mata-mata gerado ainda.</div>}
+              {tournament ? <TournamentBracket /> : <div className='text-center'>Nenhum mata-mata gerado ainda. <br/> Sorteie os grupos!</div>}
             </motion.div>
           )}
         </AnimatePresence>

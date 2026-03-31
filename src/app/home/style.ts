@@ -10,7 +10,7 @@ const Main = styled.main`
 
   display: flex;
   justify-content: center;
-  padding: 4rem 1.5rem 2rem;
+  padding: 0.8rem 1.5rem 2rem;
   box-sizing: border-box;
 `;
 const ContentWrapper = styled.div`
@@ -24,7 +24,7 @@ const ContentWrapper = styled.div`
 const GroupsLayout = styled(motion.div)`
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  // align-items: flex-start;
   gap: 1.5rem;
   margin-top: 2em;
 
