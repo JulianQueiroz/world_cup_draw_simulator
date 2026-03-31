@@ -87,3 +87,32 @@ export function generateTournamentFromGroups(groups: Group[], qualifiedPerGroup 
     rounds,
   };
 }
+
+export function applyWinner(bracket: Bracket, matchId: string, teamId: string): Bracket {
+  const next = structuredClone(bracket);
+
+  for (const round of next.rounds) {
+    for (const match of round.matches) {
+      if (match.id !== matchId) continue;
+
+      match.winner = teamId;
+
+      if (!match.nextMatchId) continue;
+
+      for (const nextRound of next.rounds) {
+        const nextMatch = nextRound.matches.find((m) => m.id === match.nextMatchId);
+        if (!nextMatch) continue;
+
+        const winner = match.team1.id === teamId ? match.team1 : match.team2;
+
+        if (match.nextMatchSlot === 'team1') {
+          nextMatch.team1 = winner;
+        } else {
+          nextMatch.team2 = winner;
+        }
+      }
+    }
+  }
+
+  return next;
+}

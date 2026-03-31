@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import MatchCard from '../Knockouts/MatchCard';
 import { useStore } from '@/lib/store';
-import { generateTournamentFromGroups } from '@/lib/knockout';
+import { applyWinner, generateTournamentFromGroups } from '@/lib/knockout';
 import { drawRepository } from '@/lib/repository/drawRepository';
 import { Button } from '../../../components/ui/button';
 import { RotateCcw } from 'lucide-react';
@@ -15,32 +15,9 @@ export function TournamentBracket() {
 
   function handleSelectWinner(matchId: string, teamId: string) {
     if (!tournament) return;
-    const next = structuredClone(tournament);
-
-    for (const round of next.rounds) {
-      for (const match of round.matches) {
-        if (match.id === matchId) {
-          match.winner = teamId;
-
-          if (match.nextMatchId) {
-            for (const nextRound of next.rounds) {
-              const nextMatch = nextRound.matches.find((m) => m.id === match.nextMatchId);
-
-              if (nextMatch) {
-                if (match.nextMatchSlot === 'team1') {
-                  nextMatch.team1 = match.team1.id === teamId ? match.team1 : match.team2;
-                } else {
-                  nextMatch.team2 = match.team1.id === teamId ? match.team1 : match.team2;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    setTournament(next);
+    setTournament(applyWinner(tournament, matchId, teamId));
   }
+  
   function handleResetKnockout() {
     if (!groups.length) return;
 
@@ -51,7 +28,7 @@ export function TournamentBracket() {
   return (
     <div className="mt-5">
       <div className="mb-4 flex justify-center sm:justify-end">
-        <Button variant="outline" className='bg-transparent border-0' onClick={handleResetKnockout}>
+        <Button variant="outline" className="bg-transparent border-0" onClick={handleResetKnockout}>
           <RotateCcw className="mr-2 h-4 w-4" />
           Resetar mata-mata
         </Button>

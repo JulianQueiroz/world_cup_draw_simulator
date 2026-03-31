@@ -11,6 +11,7 @@ import data from '../../data/team.json';
 import { validateDrawSelection, validateDuplicateTeams, validateGroupCompletion } from '../../lib/validations';
 import { drawRepository } from '@/lib/repository/drawRepository';
 import { generateTournamentFromGroups } from '@/lib/knockout';
+import { buildGroups } from '@/lib/groups';
 
 const MAX_TEAMS = 32;
 
@@ -89,11 +90,7 @@ const Menu = ({ setActiveTab }: Props) => {
     setError(null);
 
     const shuffledTeams = shuffleArray(selectedTeams);
-    const groups: Group[] = Array.from({ length: totalGroups }, (_, index) => ({
-      id: `group-${index + 1}`,
-      name: `Grupo ${String.fromCharCode(65 + index)}`,
-      teams: [],
-    }));
+    const groups = buildGroups(shuffledTeams, totalGroups, totalTeamsPerGroup);
 
     let teamIndex = 0;
     for (let groupIndex = 0; groupIndex < totalGroups; groupIndex++) {
@@ -120,11 +117,8 @@ const Menu = ({ setActiveTab }: Props) => {
     const shuffledAll = shuffleArray(allTeams).slice(0, maxTeams);
     setSelectedTeams(shuffledAll);
 
-    const groups: Group[] = Array.from({ length: totalGroups }, (_, index) => ({
-      id: `group-${index + 1}`,
-      name: `Grupo ${String.fromCharCode(65 + index)}`,
-      teams: [],
-    }));
+    const groups = buildGroups(shuffledAll, totalGroups, totalTeamsPerGroup);
+
 
     let teamIndex = 0;
     for (let groupIndex = 0; groupIndex < totalGroups; groupIndex++) {
