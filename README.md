@@ -31,3 +31,11 @@ src/
 ```
 ## Decisões tecnicas
 As decisões tecnicas tomadas, bem como a arquitetura do projeto estão elucidadas nesse arquivo: [Arquitetura](./src/docs/architecture.md)
+
+Explicação das lógicas implementadas no sorteio de grupos e mata mata estão elucidadas nesse arquivo: [Regras implementadas]
+
+## Limitações e melhorias futuras:
+- Melhorias: 
+### 1. API como fonte de dados. Pois as seleções classificadas podem mudar com o tempo e seria uma solução mais escalável.
+### 2. Sistema de potes
+### Compartilhamento do resultado em redes sociais (Ex: whatsapp, X, instagram... )
