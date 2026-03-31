@@ -39,4 +39,4 @@ Explicação das lógicas implementadas no sorteio de grupos e mata mata estão 
 ###### 1. API como fonte de dados. Pois as seleções classificadas podem mudar com o tempo e seria uma solução mais escalável.
 ###### 2. Sistema de potes
 ###### 3. Compartilhamento do resultado em redes sociais (Ex: whatsapp, X, instagram... )
-##### 4. Regra de chaveamento (1º colocado de um grupo enfrenta o 2º colocado de um outro grupo)
+###### 4. Regra de chaveamento (1º colocado de um grupo enfrenta o 2º colocado de um outro grupo)
