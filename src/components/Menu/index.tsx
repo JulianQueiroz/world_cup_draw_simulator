@@ -7,7 +7,6 @@ import { shuffleArray } from '@/lib/utils';
 import { useStore } from '@/lib/store';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
-import { generateTournamentFromGroups } from '@/lib/knockout';
 import data from '@/data/team.json';
 
 const MAX_TEAMS = 32;
@@ -113,13 +112,20 @@ const Menu = ({ setActiveTab }: Props) => {
       <SliderComponent
         title="Número de grupos"
         sliderValue={groupsCount}
-        onChange={setGroupsCount}
+        onChange={(val) => {
+          const newMax = Math.floor(MAX_TEAMS / teamsPerGroup[0]);
+          setGroupsCount([Math.min(val[0], newMax)]);
+        }}
         max={maxGroups}
       />
+
       <SliderComponent
         title="Times por grupo"
         sliderValue={teamsPerGroup}
-        onChange={setTeamsPerGroup}
+        onChange={(val) => {
+          const newMax = Math.floor(MAX_TEAMS / groupsCount[0]);
+          setTeamsPerGroup([Math.min(val[0], newMax)]);
+        }}
         max={maxTeamsPerGroup}
       />
 
@@ -136,9 +142,7 @@ const Menu = ({ setActiveTab }: Props) => {
 
       <CompletedSelectionProgress selectedCount={selectedCount} maxTeams={maxTeams} />
 
-      {error && (
-        <p className="text-sm text-red-500">{error}</p>
-      )}
+      {error && <p className="text-sm text-red-500">{error}</p>}
 
       <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={handleDrawGroups}>
         Sortear grupos
