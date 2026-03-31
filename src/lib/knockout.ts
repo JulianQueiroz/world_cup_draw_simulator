@@ -52,8 +52,8 @@ export function generateTournamentFromGroups(groups: Group[], qualifiedPerGroup 
         id: `match-${matchCounter}`,
         matchNumber: matchCounter,
         status: 'pending',
-        team1: currentTeams[i] ?? { id: null, name: 'TBD' },
-        team2: currentTeams[i + 1] ?? { id: null, name: 'TBD' },
+        team1: currentTeams[i] ?? { id: null, name: '' },
+        team2: currentTeams[i + 1] ?? { id: null, name: '' },
         winner: null,
         nextMatchId,
         nextMatchSlot,
@@ -71,7 +71,7 @@ export function generateTournamentFromGroups(groups: Group[], qualifiedPerGroup 
 
     currentTeams = Array.from({ length: currentTeams.length / 2 }, () => ({
       id: null,
-      name: 'TBD',
+      name: '',
       score: null,
       flag: '',
     }));
