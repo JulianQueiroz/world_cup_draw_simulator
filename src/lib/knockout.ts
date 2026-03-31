@@ -1,5 +1,5 @@
 import type { Group } from '@/types/draw';
-import type { KnockoutTeam, Match, Round, Tournament } from '@/types/knockout';
+import type { KnockoutTeam, Match, Round, Bracket } from '@/types/knockout';
 
 function getRoundName(teamCount: number) {
   if (teamCount === 2) return 'Final';
@@ -21,7 +21,7 @@ function getQualifiedTeams(groups: Group[], qualifiedPerGroup = 2): KnockoutTeam
   );
 }
 
-export function generateTournamentFromGroups(groups: Group[], qualifiedPerGroup = 2): Tournament {
+export function generateTournamentFromGroups(groups: Group[], qualifiedPerGroup = 2): Bracket {
   const qualifiedTeams = getQualifiedTeams(groups, qualifiedPerGroup);
 
   const rounds: Round[] = [];

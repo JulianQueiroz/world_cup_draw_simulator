@@ -25,7 +25,7 @@ export type Round = {
   matches: Match[];
 };
 
-export type Tournament = {
+export type Bracket = {
   id: string;
   name: string;
   description: string;
