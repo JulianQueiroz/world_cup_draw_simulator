@@ -50,7 +50,7 @@ export function TournamentBracket() {
   }
   return (
     <div className="mt-5">
-      <div className="mb-4 flex justify-end">
+      <div className="mb-4 flex justify-center sm:justify-end">
         <Button variant="outline" className='bg-transparent border-0' onClick={handleResetKnockout}>
           <RotateCcw className="mr-2 h-4 w-4" />
           Resetar mata-mata
@@ -62,7 +62,8 @@ export function TournamentBracket() {
           {tournament.rounds.map((round) => (
             <div
               key={round.id}
-              className="flex flex-col border-l-2 border-gray-200 dark:border-none pl-3 ml-2 pb-5 last:pb-0 sm:border-l-0 sm:pl-0 sm:ml-0 sm:pb-0">
+              className="flex flex-col border-l-2 border-gray-200 dark:border-none pl-3 ml-2 pb-5 last:pb-0
+             sm:border-l-0 sm:pl-0 sm:ml-0 sm:pb-0 sm:w-44">
               {/* round header */}
               <div className="mb-6">
                 <h2 className="text-sm font-bold uppercase tracking-widest">{round.name}</h2>
