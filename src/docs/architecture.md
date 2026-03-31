@@ -75,7 +75,6 @@ src/
 | `types/`                   | Tipagens compartilhadas |
 | `themes/`                  | Tokens e configurações de tema |
 
-## Decisões arquiteturais/técnicas:
 ### 1. Estado centralizado com Zustand
 
  Escolhi o Zustand <u>principalmente </u> por ser simples e por já ter familiaridade.
