@@ -10,13 +10,13 @@ import { Group } from '../../types/draw';
 import Groups from '../../components/Groups';
 import { generateTournamentFromGroups } from '../../lib/knockout';
 import { drawRepository } from '../../lib/repository/drawRepository';
-import { AnimatePresence,motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState('groups');
   const { groups, setGroups, tournament, setTournament } = useStore();
   const showKnockout = activeTab === 'knockout';
-
+  const hasGroups = groups.length > 0;
   const syncTournament = (groups: Group[]) => {
     localStorage.setItem('drawnGroups', JSON.stringify(groups));
     setTournament(generateTournamentFromGroups(groups, 2));
@@ -35,6 +35,7 @@ const Home = () => {
     <Main className="dark:bg-zinc-900 text-black dark:text-white">
       <ContentWrapper>
         <SwitchTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+
         <AnimatePresence mode="wait">
           {activeTab === 'groups' && (
             <motion.div
@@ -42,10 +43,29 @@ const Home = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.2 }}>
-              <GroupsLayout>
-                <Menu setActiveTab={setActiveTab} />
-                <Groups />
+              transition={{ duration: 0.2 }}
+              className="w-full">
+              <GroupsLayout
+                animate={{
+                  justifyContent: hasGroups ? 'flex-start' : 'center',
+                }}
+                transition={{ duration: 0.4 }}>
+                {/* MENU */}
+                <motion.div layout transition={{ type: 'spring', stiffness: 120, damping: 20 }}>
+                  <Menu setActiveTab={setActiveTab} />
+                </motion.div>
+
+                {/* GROUPS */}
+                {hasGroups && (
+                  <motion.div
+                    key="groups-content"
+                    initial={{ opacity: 0, x: 40 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 40 }}
+                    transition={{ duration: 0.3 }}>
+                    <Groups />
+                  </motion.div>
+                )}
               </GroupsLayout>
             </motion.div>
           )}
@@ -61,8 +81,6 @@ const Home = () => {
             </motion.div>
           )}
         </AnimatePresence>
-        {showKnockout && tournament && <TournamentBracket />}
-        {showKnockout && !tournament && <div>Nenhum mata-mata gerado ainda.</div>}
       </ContentWrapper>
     </Main>
   );
