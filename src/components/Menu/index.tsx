@@ -1,4 +1,4 @@
-import { DrawSettings, Group, Team } from '../../types/draw';
+import { DrawMenuState, Group, Team } from '../../types/draw';
 import CompletedSelectionProgress from '../CompletedSelectionProgress';
 import SliderComponent from '../Slider';
 import TeamSelection from '../TeamSelection';
@@ -10,6 +10,7 @@ import { Card } from '../ui/card';
 import data from '../../data/team.json';
 import { validateDrawSelection, validateDuplicateTeams, validateGroupCompletion } from '../../lib/validations';
 import { drawRepository } from '@/lib/repository/drawRepository';
+import { generateTournamentFromGroups } from '@/lib/knockout';
 
 const MAX_TEAMS = 32;
 
@@ -26,7 +27,7 @@ type Props = {
 };
 
 const Menu = ({ setActiveTab }: Props) => {
-  const { setGroups, groups } = useStore();
+  const { setGroups, groups, setTournament } = useStore();
   const [groupsCount, setGroupsCount] = useState<number[]>([2]);
   const [teamsPerGroup, setTeamsPerGroup] = useState<number[]>([4]);
   const [selectedTeams, setSelectedTeams] = useState<Team[]>([]);
@@ -39,24 +40,39 @@ const Menu = ({ setActiveTab }: Props) => {
 
   const maxTeamsPerGroup = Math.floor(MAX_TEAMS / totalGroups);
   const maxGroups = Math.floor(MAX_TEAMS / totalTeamsPerGroup);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-  const savedSettings = drawRepository.loadSettings();
-  if (!savedSettings) return;
+    const savedSettings = drawRepository.loadSettings();
+    if (savedSettings) {
+      const restoredMaxTeams = Math.min(savedSettings.totalGroups * savedSettings.teamsPerGroup, MAX_TEAMS);
 
-  setGroupsCount([savedSettings.totalGroups]);
-  setTeamsPerGroup([savedSettings.teamsPerGroup]);
-}, []);
+      setGroupsCount([savedSettings.totalGroups]);
+      setTeamsPerGroup([savedSettings.teamsPerGroup]);
+      setSelectedTeams((savedSettings.selectedTeams ?? []).slice(0, restoredMaxTeams));
+    }
+
+    setIsHydrated(true);
+  }, []);
 
   useEffect(() => {
-    const settings: DrawSettings = {
+    if (selectedTeams.length > maxTeams) {
+      setSelectedTeams((prev) => prev.slice(0, maxTeams));
+    }
+  }, [maxTeams, selectedTeams.length]);
+
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    const settings: DrawMenuState = {
       totalGroups,
       teamsPerGroup: totalTeamsPerGroup,
       maxTeams,
+      selectedTeams,
     };
 
     drawRepository.saveSettings(settings);
-  }, [totalGroups, totalTeamsPerGroup, maxTeams]);
+  }, [isHydrated, totalGroups, totalTeamsPerGroup, maxTeams, selectedTeams]);
 
   function handleDrawGroups() {
     const selectionError = validateDrawSelection(selectedTeams, maxTeams);
@@ -87,8 +103,13 @@ const Menu = ({ setActiveTab }: Props) => {
         teamIndex++;
       }
     }
+    const tournament = generateTournamentFromGroups(groups, 2);
 
     setGroups(groups);
+    drawRepository.saveGroups(groups);
+
+    setTournament(tournament);
+    drawRepository.saveTournament(tournament);
   }
 
   function handleSelectAll() {
@@ -114,7 +135,14 @@ const Menu = ({ setActiveTab }: Props) => {
       }
     }
 
+    const tournament = generateTournamentFromGroups(groups, 2);
+
     setGroups(groups);
+    drawRepository.saveGroups(groups);
+
+    setTournament(tournament);
+    drawRepository.saveTournament(tournament);
+
     setError(null);
   }
 
@@ -124,6 +152,11 @@ const Menu = ({ setActiveTab }: Props) => {
       setError(completionError);
       return;
     }
+
+    const tournament = generateTournamentFromGroups(groups, 2);
+
+    setTournament(tournament);
+    drawRepository.saveTournament(tournament);
 
     setError(null);
     setActiveTab('knockout');

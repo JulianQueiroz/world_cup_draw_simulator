@@ -12,7 +12,10 @@ vi.mock('../TeamSelection', () => ({ default: () => <div /> }));
 vi.mock('../../data/team.json', () => ({
   default: {
     teams: Array.from({ length: 32 }, (_, i) => ({
-      code: `T${i}`, name: `Time ${i}`, iso: 'BR', confederation: 'CONMEBOL',
+      code: `T${i}`,
+      name: `Time ${i}`,
+      iso: 'BR',
+      confederation: 'CONMEBOL',
     })),
   },
 }));
@@ -20,12 +23,15 @@ vi.mock('../../data/team.json', () => ({
 describe('Menu', () => {
   let setGroups: ReturnType<typeof vi.fn>;
   let setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  let setTournament: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     setGroups = vi.fn();
-    setActiveTab = vi.fn() as unknown as React.Dispatch<React.SetStateAction<string>>
+    setTournament = vi.fn();
+    setActiveTab = vi.fn() as unknown as React.Dispatch<React.SetStateAction<string>>;
     (useStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       setGroups,
+      setTournament,
       groups: [],
     });
   });
@@ -67,7 +73,11 @@ describe('Menu', () => {
     const totalGroups = 2;
     const totalTeamsPerGroup = 4;
     const teams = Array.from({ length: 8 }, (_, i) => ({
-      id: `T${i}`, name: `Time ${i}`, code: `T${i}`, iso: 'BR', confederation: 'CONMEBOL',
+      id: `T${i}`,
+      name: `Time ${i}`,
+      code: `T${i}`,
+      iso: 'BR',
+      confederation: 'CONMEBOL',
     }));
     const groups = Array.from({ length: totalGroups }, (_, i) => ({
       id: `group-${i + 1}`,
@@ -75,7 +85,7 @@ describe('Menu', () => {
       teams: teams.slice(i * totalTeamsPerGroup, (i + 1) * totalTeamsPerGroup),
     }));
 
-    (useStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ setGroups, groups });
+    (useStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ setGroups, groups, setTournament });
 
     render(<Menu setActiveTab={setActiveTab} />);
     fireEvent.click(screen.getByText('Avançar para Mata-Mata'));

@@ -1,6 +1,5 @@
 import { Bracket } from '@/types/knockout';
-import type { Group } from '../../types/draw';
-import type { DrawSettings } from '../../types/draw';
+import type { DrawMenuState, Group } from '../../types/draw';
 
 export const drawRepository = {
   saveGroups: (groups: Group[]) =>
@@ -11,10 +10,10 @@ export const drawRepository = {
     return raw ? JSON.parse(raw) : [];
   },
 
-  saveSettings: (settings: DrawSettings) =>
+  saveSettings: (settings: DrawMenuState) =>
     localStorage.setItem('drawSettings', JSON.stringify(settings)),
 
-  loadSettings: (): DrawSettings | null => {
+  loadSettings: (): DrawMenuState | null => {
     const raw = localStorage.getItem('drawSettings');
     return raw ? JSON.parse(raw) : null;
   },
