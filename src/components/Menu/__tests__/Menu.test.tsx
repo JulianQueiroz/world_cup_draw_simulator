@@ -1,7 +1,7 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '../../../node_modules/@testing-library/react';
-import Menu from './index';
-import { useStore } from '../../lib/store';
+import { render, screen, fireEvent } from '@testing-library/react';
+import Menu from '../index';
+import { useStore } from '../../../lib/store';
 
 vi.mock('../../lib/store', () => ({ useStore: vi.fn() }));
 vi.mock('../../components/ui/card', () => ({ Card: ({ children }: any) => <div>{children}</div> }));
@@ -90,5 +90,54 @@ describe('Menu', () => {
     render(<Menu setActiveTab={setActiveTab} />);
     fireEvent.click(screen.getByText('Avançar para Mata-Mata'));
     expect(setActiveTab).toHaveBeenCalledWith('knockout');
+  });
+  
+  test('drag entre grupos seguido de avançar emite erro de tamanho desigual', () => {
+    const groups = [
+      {
+        id: 'group-1',
+        name: 'Grupo A',
+        teams: Array.from({ length: 5 }, (_, i) => ({
+          id: `A${i}`,
+          name: `Time A${i}`,
+          code: `A${i}`,
+          iso: 'BR',
+          confederation: 'CONMEBOL',
+        })),
+      },
+      {
+        id: 'group-2',
+        name: 'Grupo B',
+        teams: Array.from({ length: 2 }, (_, i) => ({
+          id: `B${i}`,
+          name: `Time B${i}`,
+          code: `B${i}`,
+          iso: 'BR',
+          confederation: 'CONMEBOL',
+        })),
+      },
+    ];
+
+    (useStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
+      setGroups,
+      setTournament,
+      groups,
+    });
+
+    render(<Menu setActiveTab={setActiveTab} />);
+    fireEvent.click(screen.getByText('Avançar para Mata-Mata'));
+
+    expect(setActiveTab).not.toHaveBeenCalled();
+    expect(screen.getByText(/precisam ter exatamente/i)).toBeInTheDocument();
+  });
+
+  test('re-sortear chama setGroups e setTournament novamente', () => {
+    render(<Menu setActiveTab={setActiveTab} />);
+
+    fireEvent.click(screen.getByText(/Selecionar todos/i));
+    fireEvent.click(screen.getByText('Re-sortear'));
+
+    expect(setGroups).toHaveBeenCalled();
+    expect(setTournament).toHaveBeenCalled();
   });
 });

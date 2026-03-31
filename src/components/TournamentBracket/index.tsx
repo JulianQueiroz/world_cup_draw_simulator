@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import MatchCard from '../Knockouts/MatchCard';
 import { useStore } from '@/lib/store';
-import { applyWinner, generateTournamentFromGroups } from '@/lib/knockout';
+import { applyWinner, generateTournamentFromGroups } from '@/lib/knockout/knockout';
 import { drawRepository } from '@/lib/repository/drawRepository';
 import { Button } from '../../../components/ui/button';
 import { RotateCcw } from 'lucide-react';
@@ -17,7 +17,7 @@ export function TournamentBracket() {
     if (!tournament) return;
     setTournament(applyWinner(tournament, matchId, teamId));
   }
-  
+
   function handleResetKnockout() {
     if (!groups.length) return;
 

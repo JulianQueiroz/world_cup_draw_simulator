@@ -8,10 +8,10 @@ import { useStore } from '../../lib/store';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 import data from '../../data/team.json';
-import { validateDrawSelection, validateDuplicateTeams, validateGroupCompletion } from '../../lib/validations';
+import { validateDrawSelection, validateDuplicateTeams, validateEqualGroupSizes, validateGroupCompletion } from '../../lib/draw/validations';
 import { drawRepository } from '@/lib/repository/drawRepository';
-import { generateTournamentFromGroups } from '@/lib/knockout';
-import { buildGroups } from '@/lib/groups';
+import { generateTournamentFromGroups } from '@/lib/knockout/knockout';
+import { buildGroups } from '@/lib/draw/groups';
 
 const MAX_TEAMS = 32;
 
@@ -119,7 +119,6 @@ const Menu = ({ setActiveTab }: Props) => {
 
     const groups = buildGroups(shuffledAll, totalGroups, totalTeamsPerGroup);
 
-
     let teamIndex = 0;
     for (let groupIndex = 0; groupIndex < totalGroups; groupIndex++) {
       for (let slot = 0; slot < totalTeamsPerGroup; slot++) {
@@ -152,6 +151,8 @@ const Menu = ({ setActiveTab }: Props) => {
     setTournament(tournament);
     drawRepository.saveTournament(tournament);
 
+    const sizeError = validateEqualGroupSizes(groups, totalTeamsPerGroup);
+    if (sizeError) return setError(sizeError);
     setError(null);
     setActiveTab('knockout');
   }

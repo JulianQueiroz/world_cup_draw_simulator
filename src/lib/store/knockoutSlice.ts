@@ -2,7 +2,7 @@ import type { StateCreator } from 'zustand';
 import type { Bracket } from '@/types/knockout';
 import type { Group } from '@/types/draw';
 import { drawRepository } from '@/lib/repository/drawRepository';
-import { generateTournamentFromGroups } from '@/lib/knockout';
+import { generateTournamentFromGroups } from '@/lib/knockout/knockout';
 
 export type KnockoutSlice = {
   tournament: Bracket | null;

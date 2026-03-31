@@ -19,7 +19,7 @@ import { useState } from 'react';
 import { Team } from '@/types/draw';
 import TeamDragItem from './TeamDragItem';
 import GroupContainer from './GroupContainer';
-import { findGroupByTeamId, findTeamById } from '@/lib/groups';
+import { findGroupByTeamId, findTeamById } from '@/lib/draw/groups';
 import TeamDragOverlay from './TeamDragOverlay';
 import { useStore } from '@/lib/store';
 

@@ -1,4 +1,4 @@
-import type { Group, Team } from '../types/draw';
+import type { Group, Team } from '../../types/draw';
 
 export function validateDrawSelection(selectedTeams: Team[], maxTeams: number): string | null {
   if (selectedTeams.length === 0) return 'Selecione ao menos uma seleção antes de sortear.';
@@ -21,5 +21,13 @@ export function validateGroupCompletion(groups: Group[], expectedTotal: number):
 
 export function validateMinimumTeams(selectedTeams: Team[], min: number): string | null {
   if (selectedTeams.length < min) return `Selecione ao menos ${min} seleção.`;
+  return null;
+}
+
+export function validateEqualGroupSizes(groups: Group[], teamsPerGroup: number): string | null {
+  const uneven = groups.find((g) => g.teams.length !== teamsPerGroup);
+  if (uneven) {
+    return `O ${uneven.name} tem ${uneven.teams.length} time(s) — todos os grupos precisam ter exatamente ${teamsPerGroup} times.`;
+  }
   return null;
 }
