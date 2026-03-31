@@ -1,4 +1,3 @@
-// lib/repository/drawRepository.ts
 import type { Group } from '../../types/draw';
 import type { DrawSettings } from '../../types/draw';
 
