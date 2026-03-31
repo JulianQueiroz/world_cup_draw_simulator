@@ -22,4 +22,4 @@ Claude, Chat GPT, Manus.
 - Desenvolvimento do README principal ([esse](./README.md))
 - Apoio no desenvolvimento do [documento de arquitetura](./src/docs/architecture.md) 
     ##### Adaptações manuais
-- A seção 7 de 'decisões técnicas' do [documento de arquitetura](./src/docs/architecture.md) foi inteiramente escrita por mim, bem como este documento, que está sendo produzido sem uso de IA
+- As sessões 7 de 'decisões técnicas' e 8 de 'Limitações e melhorias futuras' do [documento de arquitetura](./src/docs/architecture.md) foi inteiramente escrita por mim, bem como este documento, que está sendo produzido sem uso de IA
