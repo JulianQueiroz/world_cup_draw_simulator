@@ -1,5 +1,6 @@
 import type { StateCreator } from 'zustand';
-import type { Group, Team } from '@/types/draw';
+import type { Group } from '@/types/draw';
+import { drawRepository } from '@/lib/repository/drawRepository';
 
 export type DrawSlice = {
   groups: Group[];
@@ -8,5 +9,8 @@ export type DrawSlice = {
 
 export const createDrawSlice: StateCreator<DrawSlice> = (set) => ({
   groups: [],
-  setGroups: (groups) => set({ groups }),
+  setGroups: (groups) => {
+    drawRepository.saveGroups(groups);
+    set({ groups });
+  },
 });
