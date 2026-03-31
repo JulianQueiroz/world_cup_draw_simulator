@@ -9,7 +9,7 @@ const Main = styled.main`
   min-height: 70vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
   padding: 0.8rem 1.5rem 2rem;
   box-sizing: border-box;
 `;
