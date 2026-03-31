@@ -1,13 +1,14 @@
-import { Group, Team } from '@/types/draw';
+import { Group, Team } from '../../types/draw';
 import CompletedSelectionProgress from '../CompletedSelectionProgress';
 import SliderComponent from '../Slider';
 import TeamSelection from '../TeamSelection';
 import { useState } from 'react';
-import { shuffleArray } from '@/lib/utils';
-import { useStore } from '@/lib/store';
+import { shuffleArray } from '../../lib/utils';
+import { useStore } from '../../lib/store';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
-import data from '@/data/team.json';
+import data from '../../data/team.json';
+import { validateDrawSelection, validateDuplicateTeams, validateGroupCompletion } from '../../lib/validations';
 
 const MAX_TEAMS = 32;
 
@@ -39,12 +40,15 @@ const Menu = ({ setActiveTab }: Props) => {
   const maxGroups = Math.floor(MAX_TEAMS / totalTeamsPerGroup);
 
   function handleDrawGroups() {
-    if (selectedTeams.length === 0) {
-      setError('Selecione ao menos uma seleção antes de sortear.');
+    const selectionError = validateDrawSelection(selectedTeams, maxTeams);
+    if (selectionError) {
+      setError(selectionError);
       return;
     }
-    if (selectedTeams.length !== maxTeams) {
-      setError(`Selecione exatamente ${maxTeams} seleções para sortear.`);
+
+    const duplicateError = validateDuplicateTeams(selectedTeams);
+    if (duplicateError) {
+      setError(duplicateError);
       return;
     }
     setError(null);
@@ -96,13 +100,12 @@ const Menu = ({ setActiveTab }: Props) => {
   }
 
   function handleAdvanceToKnockout() {
-    const expectedTeams = totalGroups * totalTeamsPerGroup;
-    const totalTeamsInGroups = groups.reduce((acc, g) => acc + g.teams.length, 0);
-
-    if (totalTeamsInGroups !== expectedTeams) {
-      setError(`Os grupos precisam ter exatamente ${expectedTeams} seleções no total para avançar.`);
+    const completionError = validateGroupCompletion(groups, totalGroups * totalTeamsPerGroup);
+    if (completionError) {
+      setError(completionError);
       return;
     }
+
     setError(null);
     setActiveTab('knockout');
   }
