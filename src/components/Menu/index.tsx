@@ -1,14 +1,15 @@
-import { Group, Team } from '../../types/draw';
+import { DrawSettings, Group, Team } from '../../types/draw';
 import CompletedSelectionProgress from '../CompletedSelectionProgress';
 import SliderComponent from '../Slider';
 import TeamSelection from '../TeamSelection';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { shuffleArray } from '../../lib/utils';
 import { useStore } from '../../lib/store';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 import data from '../../data/team.json';
 import { validateDrawSelection, validateDuplicateTeams, validateGroupCompletion } from '../../lib/validations';
+import { drawRepository } from '@/lib/repository/drawRepository';
 
 const MAX_TEAMS = 32;
 
@@ -38,6 +39,24 @@ const Menu = ({ setActiveTab }: Props) => {
 
   const maxTeamsPerGroup = Math.floor(MAX_TEAMS / totalGroups);
   const maxGroups = Math.floor(MAX_TEAMS / totalTeamsPerGroup);
+
+  useEffect(() => {
+  const savedSettings = drawRepository.loadSettings();
+  if (!savedSettings) return;
+
+  setGroupsCount([savedSettings.totalGroups]);
+  setTeamsPerGroup([savedSettings.teamsPerGroup]);
+}, []);
+
+  useEffect(() => {
+    const settings: DrawSettings = {
+      totalGroups,
+      teamsPerGroup: totalTeamsPerGroup,
+      maxTeams,
+    };
+
+    drawRepository.saveSettings(settings);
+  }, [totalGroups, totalTeamsPerGroup, maxTeams]);
 
   function handleDrawGroups() {
     const selectionError = validateDrawSelection(selectedTeams, maxTeams);

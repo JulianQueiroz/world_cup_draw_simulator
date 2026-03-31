@@ -1,3 +1,4 @@
+import { Bracket } from '@/types/knockout';
 import type { Group } from '../../types/draw';
 import type { DrawSettings } from '../../types/draw';
 
@@ -17,9 +18,16 @@ export const drawRepository = {
     const raw = localStorage.getItem('drawSettings');
     return raw ? JSON.parse(raw) : null;
   },
+  saveTournament: (tournament: Bracket) =>
+    localStorage.setItem('drawnTournament', JSON.stringify(tournament)),
 
+  loadTournament: (): Bracket | null => {
+    const raw = localStorage.getItem('drawnTournament');
+    return raw ? JSON.parse(raw) : null;
+  },
   clear: () => {
     localStorage.removeItem('drawnGroups');
     localStorage.removeItem('drawSettings');
+    localStorage.removeItem('drawnTournament');
   },
 };
