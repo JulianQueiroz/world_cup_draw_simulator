@@ -13,3 +13,9 @@ export type Group = {
 };
 
 export type Status = 'pending' | 'in-progress' | 'completed';
+
+export type DrawSettings = {
+  totalGroups: number;
+  teamsPerGroup: number;
+  maxTeams: number;
+};
