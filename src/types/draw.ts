@@ -2,7 +2,7 @@ export type Team = {
   id: string;
   name: string;
   code: string;
-  flag: string;
+  iso: string;
   confederation: string;
 };
 
@@ -13,3 +13,9 @@ export type Group = {
 };
 
 export type Status = 'pending' | 'in-progress' | 'completed';
+
+export type DrawSettings = {
+  totalGroups: number;
+  teamsPerGroup: number;
+  maxTeams: number;
+};

@@ -1,11 +1,11 @@
 import type { Group } from '@/types/draw';
-import type { KnockoutTeam, Match, Round, Tournament } from '@/types/knockout';
+import type { KnockoutTeam, Match, Round, Bracket } from '@/types/knockout';
 
 function getRoundName(teamCount: number) {
   if (teamCount === 2) return 'Final';
-  if (teamCount === 4) return 'Semifinals';
-  if (teamCount === 8) return 'Quarterfinals';
-  if (teamCount === 16) return 'Round of 16';
+  if (teamCount === 4) return 'Semifinal';
+  if (teamCount === 8) return 'Quartas de final';
+  if (teamCount === 16) return 'Oitavas de final';
   return `Round of ${teamCount}`;
 }
 
@@ -14,14 +14,14 @@ function getQualifiedTeams(groups: Group[], qualifiedPerGroup = 2): KnockoutTeam
     group.teams.slice(0, qualifiedPerGroup).map((team, index) => ({
       id: team.id,
       name: team.name,
-      flag: team.flag,
+      iso: team.iso,
       seed: index + 1,
       score: null,
     }))
   );
 }
 
-export function generateTournamentFromGroups(groups: Group[], qualifiedPerGroup = 2): Tournament {
+export function generateTournamentFromGroups(groups: Group[], qualifiedPerGroup = 2): Bracket {
   const qualifiedTeams = getQualifiedTeams(groups, qualifiedPerGroup);
 
   const rounds: Round[] = [];

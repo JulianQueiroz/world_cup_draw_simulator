@@ -5,10 +5,11 @@ type Props = {
     title:string;
     sliderValue: number[]
     onChange: (value: number[]) => void
+    max?: number;
 }
 
 
-const SliderComponent = ({title,sliderValue, onChange}:Props) => {
+const SliderComponent = ({title,sliderValue, onChange, max=16}:Props) => {
     return(
         <SliderContent className="flex items-center">
             <h1>{title}</h1>

@@ -1,48 +1,38 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest';
-import { render } from '@testing-library/react';
+import { render } from  '../../../node_modules/@testing-library/react'
 import Home from './page';
-import { useStore } from '@/lib/store';
+import { useStore } from '../../lib/store';
 
-vi.mock('@/lib/store', () => ({
-  useStore: vi.fn(),
+vi.mock('../../lib/store', () => ({ useStore: vi.fn() }));
+vi.mock('../../components/SwitchTabs', () => ({ default: () => <div /> }));
+vi.mock('../../components/Menu', () => ({ default: () => <div /> }));
+vi.mock('../../components/Groups', () => ({ default: () => <div /> }));
+vi.mock('../../components/TournamentBracket', () => ({ TournamentBracket: () => <div /> }));
+vi.mock('./style', () => ({
+  Main: ({ children }: any) => <div>{children}</div>,
+  ContentWrapper: ({ children }: any) => <div>{children}</div>,
+  GroupsLayout: ({ children }: any) => <div>{children}</div>,
 }));
+vi.mock('../../lib/knockout', () => ({ generateTournamentFromGroups: vi.fn(() => ({ rounds: [] })) }));
 
 const mockGroups = [
-  {
-    id: 'group-1',
-    name: 'Grupo A',
-    teams: [
-      { id: 'br', name: 'Brasil', code: 'BRA', flag: '🇧🇷', confederation: 'CONMEBOL' },
-    ],
-  },
+  { id: 'group-1', name: 'Grupo A', teams: [{ id: 'BRA', name: 'Brasil', code: 'BRA', iso: 'BR', confederation: 'CONMEBOL' }] },
 ];
 
 describe('Home — persistência', () => {
   beforeEach(() => {
     localStorage.clear();
-
-    (useStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      groups: [],
-      setGroups: vi.fn(),
-      tournament: null,
-      setTournament: vi.fn(),
-    });
   });
 
-  test('ao recarregar com dados no localStorage, setGroups é chamado com os grupos salvos', () => {
+  test('ao recarregar com dados no localStorage, setGroups é chamado', () => {
     localStorage.setItem('drawnGroups', JSON.stringify(mockGroups));
-
     const setGroups = vi.fn();
 
     (useStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      groups: [],
-      setGroups,
-      tournament: null,
-      setTournament: vi.fn(),
+      groups: [], setGroups, tournament: null, setTournament: vi.fn(),
     });
 
     render(<Home />);
-
     expect(setGroups).toHaveBeenCalledWith(mockGroups);
   });
 
@@ -50,14 +40,10 @@ describe('Home — persistência', () => {
     const setGroups = vi.fn();
 
     (useStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      groups: [],
-      setGroups,
-      tournament: null,
-      setTournament: vi.fn(),
+      groups: [], setGroups, tournament: null, setTournament: vi.fn(),
     });
 
     render(<Home />);
-
     expect(setGroups).not.toHaveBeenCalled();
   });
 });

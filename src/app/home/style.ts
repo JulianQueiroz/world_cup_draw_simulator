@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-
+import { motion } from "framer-motion";
 export { Main, ContentWrapper, SearchBar, NationsBox, GroupsContent,ContentGroups, GroupsLayout};
 
 const Main = styled.main`
@@ -21,12 +21,13 @@ const ContentWrapper = styled.div`
   align-items: center;
 `;
 
-const GroupsLayout = styled.div`
+const GroupsLayout = styled(motion.div)`
   width: 100%;
   display: flex;
-  align-items: flex-start; 
+  align-items: flex-start;
   gap: 1.5rem;
-  margin-top:2em;
+  margin-top: 2em;
+
   @media (max-width: 768px) {
     flex-direction: column;
   }
