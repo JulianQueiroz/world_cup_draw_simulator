@@ -6,9 +6,9 @@ export { Main, ContentWrapper, SearchBar, NationsBox, GroupsContent,ContentGroup
 
 const Main = styled.main`
   width: 100%;
-  min-height: 100vh;
-
+  min-height: 70vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   padding: 0.8rem 1.5rem 2rem;
   box-sizing: border-box;
