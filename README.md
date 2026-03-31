@@ -1,6 +1,6 @@
 # World Cup Draw Simulator 2026
 
-## Como rodar o World Cup Draw Simulator 2026?
+## Como rodar?
 
 ```bash
 npm install
