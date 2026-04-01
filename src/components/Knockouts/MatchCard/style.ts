@@ -8,12 +8,20 @@ export const MatchWrapper = styled.div`
   width: 100%;
   border-radius: 18px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, rgba(24, 24, 27, 0.95) 0%, rgba(15, 15, 20, 0.98) 100%);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   backdrop-filter: blur(10px);
   box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 10px 30px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+  .dark & {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, rgba(24, 24, 27, 0.95) 0%, rgba(15, 15, 20, 0.98) 100%);
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
 `;
 
 export const TeamButton = styled.button<TeamButtonProps>`
@@ -21,8 +29,8 @@ export const TeamButton = styled.button<TeamButtonProps>`
   padding: 14px 16px;
   border: 0;
   text-align: left;
-  background: transparent;
-  color: #f4f4f5;
+  background: #ececec;
+  color: #18181b;
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
@@ -35,28 +43,41 @@ export const TeamButton = styled.button<TeamButtonProps>`
   justify-content: space-between;
 
   &:not(:last-child) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.03);
+    background: #e5e7eb;
   }
 
   ${({ $isWinner }) =>
     $isWinner &&
     css`
-      background: linear-gradient(
-        90deg,
-        rgba(74, 222, 128, 0.28) 0%,
-        rgba(74, 222, 128, 0.18) 45%,
-        rgba(74, 222, 128, 0.08) 100%
-      );
-      color: #ffffff;
+      background: linear-gradient(90deg, rgba(34, 197, 94, 0.45) 0%, rgba(34, 197, 94, 0.28) 50%, rgba(34, 197, 94, 0.12) 100%);
+      color: #052e16;
       font-weight: 700;
-      box-shadow:
-        inset 0 0 0 1px rgba(134, 239, 172, 0.45),
-        0 0 24px rgba(74, 222, 128, 0.12);
     `}
+
+  .dark & {
+    background: #18181b;
+    color: #f4f4f5;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    ${({ $isWinner }) =>
+      $isWinner &&
+      css`
+        background: linear-gradient(90deg, rgba(74, 222, 128, 0.28) 0%, rgba(74, 222, 128, 0.18) 45%, rgba(74, 222, 128, 0.08) 100%);
+        color: #ffffff;
+        font-weight: 700;
+      `}
+  }
 `;
 
 export const TeamInfo = styled.div`
@@ -73,5 +94,9 @@ export const TeamName = styled.span`
 export const ChampionIconWrapper = styled.span`
   display: flex;
   align-items: center;
-  color: #f5d76e;
+  color: #ca8a04;
+
+  .dark & {
+    color: #f5d76e;
+  }
 `;
