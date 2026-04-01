@@ -46,3 +46,6 @@ Explicação das lógicas implementadas no sorteio de grupos e mata mata estão 
 ###### 4. Compartilhamento do resultado em redes sociais (Ex: whatsapp, X, instagram... )
 ###### 5. Regra de chaveamento (1º colocado de um grupo enfrenta o 2º colocado de um outro grupo)
 ###### 6. Ampliar cobertura de testes.
+
+## Uso de IA:
+Os esclarecimentos sobre uso de IA e ferramentas utilizadas estão elucidadas nesse doc:  [Uso de IA](./AI_USAGE.md)
