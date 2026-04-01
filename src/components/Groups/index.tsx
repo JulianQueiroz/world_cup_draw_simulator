@@ -1,6 +1,5 @@
 'use client';
 
-import { GroupsContent } from '@/app/home/style';
 import {
   closestCenter,
   DndContext,
@@ -22,6 +21,7 @@ import GroupContainer from './GroupContainer';
 import { findGroupByTeamId, findTeamById } from '@/lib/draw/groups';
 import TeamDragOverlay from './TeamDragOverlay';
 import { useStore } from '@/lib/store';
+import { GroupsContent } from '@/app/style';
 
 const Groups = () => {
   const { groups, setGroups } = useStore();

@@ -1,6 +1,7 @@
+import { Group } from '@/types/draw';
 import { describe, test, expect } from 'vitest';
-import { findGroupByTeamId, findTeamById } from './groups';
-import type { Group } from '../types/draw';
+import { findGroupByTeamId, findTeamById } from '../draw/groups';
+
 
 const mockGroups: Group[] = [
   {
