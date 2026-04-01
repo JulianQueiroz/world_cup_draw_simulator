@@ -35,8 +35,14 @@ As decisões tecnicas tomadas, bem como a arquitetura do projeto estão elucidad
 Explicação das lógicas implementadas no sorteio de grupos e mata mata estão elucidadas nesse arquivo: [Regras implementadas](./src/docs/rules.md)
 
 ## Limitações e melhorias futuras:
+
+#### Limitações:
+###### 1. Chaveamento é aleatório, não segue a regra da vida real.
+
 #### Melhorias: 
 ###### 1. API como fonte de dados. Pois as seleções classificadas podem mudar com o tempo e seria uma solução mais escalável.
 ###### 2. Sistema de potes
-###### 3. Compartilhamento do resultado em redes sociais (Ex: whatsapp, X, instagram... )
-###### 4. Regra de chaveamento (1º colocado de um grupo enfrenta o 2º colocado de um outro grupo)
+###### 3. Lógica de chaveamento semelhante à vida real. Ex: 1º colocado do grupo A enfrenta 2º colocado do grupo B.
+###### 4. Compartilhamento do resultado em redes sociais (Ex: whatsapp, X, instagram... )
+###### 5. Regra de chaveamento (1º colocado de um grupo enfrenta o 2º colocado de um outro grupo)
+###### 6. Ampliar cobertura de testes.

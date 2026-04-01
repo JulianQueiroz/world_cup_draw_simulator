@@ -7,16 +7,14 @@ vi.mock('../../../lib/store', () => ({ useStore: vi.fn() }));
 vi.mock('../../ui/card', () => ({ Card: ({ children }: any) => <div>{children}</div> }));
 vi.mock('../../ui/button', () => ({ Button: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button> }));
 vi.mock('../CompletedSelectionProgress', () => ({ default: () => <div /> }));
-vi.mock('../Slider', () => ({
+vi.mock('../../Slider', () => ({
   default: ({ title, max }: any) => <div data-testid={title} data-max={max} />,
 }));
-vi.mock('../RadioGroup', () => ({
+vi.mock('../../RadioGroup', () => ({
   default: ({ title, onChange, options }: any) => (
     <div data-testid={title}>
       {options.map((opt: number) => (
-        <button key={opt} onClick={() => onChange(opt)}>
-          {opt}
-        </button>
+        <input key={opt} type="radio" data-testid={`radio-${opt}`} value={opt} onChange={() => onChange(opt)} />
       ))}
     </div>
   ),
