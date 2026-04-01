@@ -1,4 +1,6 @@
 # World Cup Draw Simulator 2026
+#### Link de acesso:
+[https://world-cup-draw-simulator-ashen.vercel.app/](https://world-cup-draw-simulator-ashen.vercel.app/)
 
 ## Como rodar?
 
