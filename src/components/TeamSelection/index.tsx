@@ -16,7 +16,11 @@ const TeamSelection = ({ selectedTeams, setSelectedTeams, maxTeams }: Props) => 
   return (
     <>
       <ComboboxComponent selectedTeams={selectedTeams} setSelectedTeams={setSelectedTeams} maxTeams={maxTeams} />
-
+      {selectedTeams.length > 0 && (
+        <button onClick={() => setSelectedTeams([])} className="mt-1 text-xs text-gray-400 hover:text-gray-300 transition-colors self-end">
+          Desmarcar todos
+        </button>
+      )}
       <div className="mt-3 flex flex-wrap gap-2">
         {selectedTeams.map((team) => (
           <Badge

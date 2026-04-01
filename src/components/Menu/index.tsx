@@ -35,12 +35,13 @@ const Menu = ({ setActiveTab }: Props) => {
   const [selectedTeams, setSelectedTeams] = useState<Team[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
-
+  const selectedCount = selectedTeams.length;
+  
   const totalGroups = groupsCount;
   const totalTeamsPerGroup = teamsPerGroup;
   const maxTeams = Math.min(totalGroups * totalTeamsPerGroup, MAX_TEAMS);
   const maxTeamsPerGroup = Math.floor(MAX_TEAMS / totalGroups);
-  const selectedCount = selectedTeams.length;
+  const isSelectionComplete = selectedCount === maxTeams;
 
   useEffect(() => {
     const savedSettings = drawRepository.loadSettings();
@@ -118,12 +119,7 @@ const Menu = ({ setActiveTab }: Props) => {
 
   return (
     <Card className="mx-auto flex w-full max-w-sm flex-col gap-2 p-5">
-      <RadioGroup
-        title="Número de grupos"
-        value={groupsCount}
-        onChange={(val) => setGroupsCount(val)}
-        options={[2, 4, 8]}
-      />
+      <RadioGroup title="Número de grupos" value={groupsCount} onChange={(val) => setGroupsCount(val)} options={[2, 4, 8]} />
 
       <SliderComponent
         title="Times por grupo"
@@ -150,10 +146,10 @@ const Menu = ({ setActiveTab }: Props) => {
       <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={handleDrawGroups}>
         Sortear grupos
       </Button>
-      <Button className="bg-green-100 text-green-700 hover:bg-green-200" onClick={handleAdvanceToKnockout}>
+      <Button className="bg-green-100 text-green-700 hover:bg-green-200" onClick={handleAdvanceToKnockout} disabled={!isSelectionComplete}>
         Avançar para Mata-Mata
       </Button>
-      <Button className="bg-gray-100 text-gray-700" onClick={handleDrawGroups}>
+      <Button className="bg-gray-100 text-gray-700" onClick={handleDrawGroups} disabled={!isSelectionComplete}>
         Re-sortear
       </Button>
     </Card>
