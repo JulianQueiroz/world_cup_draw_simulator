@@ -69,3 +69,9 @@ describe('validateMinimumTeams', () => {
     expect(validateMinimumTeams([makeTeam('BRA'), makeTeam('ARG')], 2)).toBeNull();
   });
 });
+
+describe('validateEqualGroupSizes', () => {
+  test('retorna erro se um grupo tem times a mais após drag')
+  test('retorna erro se um grupo tem times a menos após drag')
+  test('retorna null se todos os grupos têm o mesmo tamanho')
+})

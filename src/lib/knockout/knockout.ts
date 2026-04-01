@@ -52,8 +52,8 @@ export function generateTournamentFromGroups(groups: Group[], qualifiedPerGroup 
         id: `match-${matchCounter}`,
         matchNumber: matchCounter,
         status: 'pending',
-        team1: currentTeams[i] ?? { id: null, name: 'TBD' },
-        team2: currentTeams[i + 1] ?? { id: null, name: 'TBD' },
+        team1: currentTeams[i] ?? { id: null, name: '' },
+        team2: currentTeams[i + 1] ?? { id: null, name: '' },
         winner: null,
         nextMatchId,
         nextMatchSlot,
@@ -71,7 +71,7 @@ export function generateTournamentFromGroups(groups: Group[], qualifiedPerGroup 
 
     currentTeams = Array.from({ length: currentTeams.length / 2 }, () => ({
       id: null,
-      name: 'TBD',
+      name: '',
       score: null,
       flag: '',
     }));
@@ -86,4 +86,33 @@ export function generateTournamentFromGroups(groups: Group[], qualifiedPerGroup 
     status: 'pending',
     rounds,
   };
+}
+
+export function applyWinner(bracket: Bracket, matchId: string, teamId: string): Bracket {
+  const next = structuredClone(bracket);
+
+  for (const round of next.rounds) {
+    for (const match of round.matches) {
+      if (match.id !== matchId) continue;
+
+      match.winner = teamId;
+
+      if (!match.nextMatchId) continue;
+
+      for (const nextRound of next.rounds) {
+        const nextMatch = nextRound.matches.find((m) => m.id === match.nextMatchId);
+        if (!nextMatch) continue;
+
+        const winner = match.team1.id === teamId ? match.team1 : match.team2;
+
+        if (match.nextMatchSlot === 'team1') {
+          nextMatch.team1 = winner;
+        } else {
+          nextMatch.team2 = winner;
+        }
+      }
+    }
+  }
+
+  return next;
 }

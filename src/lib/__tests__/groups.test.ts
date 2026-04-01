@@ -39,3 +39,10 @@ describe('findTeamById', () => {
     expect(findTeamById(mockGroups, 'XXX')).toBeNull();
   });
 });
+
+describe('buildGroups', () => {
+  test('gera a quantidade correta de grupos')
+  test('distribui os times corretamente entre os grupos')
+  test('nomeia os grupos como Grupo A, Grupo B...')
+  test('último grupo recebe os times restantes corretamente')
+})

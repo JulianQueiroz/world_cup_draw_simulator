@@ -6,29 +6,18 @@ import { TournamentBracket } from '../../components/TournamentBracket';
 import { useStore } from '../../lib/store';
 import SwitchTabs from '../../components/SwitchTabs';
 import Menu from '../../components/Menu';
-import { Group } from '../../types/draw';
 import Groups from '../../components/Groups';
-import { generateTournamentFromGroups } from '../../lib/knockout';
-import { drawRepository } from '../../lib/repository/drawRepository';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState('groups');
-  const { groups, setGroups, tournament, setTournament } = useStore();
+  const { hydrate, groups, tournament } = useStore();
+
   const showKnockout = activeTab === 'knockout';
   const hasGroups = groups.length > 0;
-  const syncTournament = (groups: Group[]) => {
-    localStorage.setItem('drawnGroups', JSON.stringify(groups));
-    setTournament(generateTournamentFromGroups(groups, 2));
-  };
 
   useEffect(() => {
-    if (groups.length > 0) syncTournament(groups);
-  }, [groups]);
-
-  useEffect(() => {
-    const groups = drawRepository.loadGroups();
-    if (groups.length > 0) setGroups(groups);
+    hydrate();
   }, []);
 
   return (
@@ -50,7 +39,6 @@ const Home = () => {
                   justifyContent: hasGroups ? 'flex-start' : 'center',
                 }}
                 transition={{ duration: 0.4 }}>
-                {/* MENU */}
                 <motion.div layout transition={{ type: 'spring', stiffness: 120, damping: 20 }}>
                   <Menu setActiveTab={setActiveTab} />
                 </motion.div>
@@ -77,7 +65,13 @@ const Home = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.2 }}>
-              {tournament ? <TournamentBracket /> : <div>Nenhum mata-mata gerado ainda.</div>}
+              {tournament ? (
+                <TournamentBracket />
+              ) : (
+                <div className="text-center">
+                  Nenhum mata-mata gerado ainda. <br /> Sorteie os grupos!
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>

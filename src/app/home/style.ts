@@ -6,11 +6,11 @@ export { Main, ContentWrapper, SearchBar, NationsBox, GroupsContent,ContentGroup
 
 const Main = styled.main`
   width: 100%;
-  min-height: 100vh;
-
+  min-height: 70vh;
   display: flex;
-  justify-content: center;
-  padding: 4rem 1.5rem 2rem;
+  flex-direction: column;
+  // justify-content: center;
+  padding: 0.8rem 1.5rem 2rem;
   box-sizing: border-box;
 `;
 const ContentWrapper = styled.div`
@@ -24,7 +24,7 @@ const ContentWrapper = styled.div`
 const GroupsLayout = styled(motion.div)`
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  // align-items: flex-start;
   gap: 1.5rem;
   margin-top: 2em;
 

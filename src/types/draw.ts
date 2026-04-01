@@ -14,8 +14,9 @@ export type Group = {
 
 export type Status = 'pending' | 'in-progress' | 'completed';
 
-export type DrawSettings = {
+export type DrawMenuState = {
   totalGroups: number;
   teamsPerGroup: number;
   maxTeams: number;
+  selectedTeams: Team[];
 };

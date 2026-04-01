@@ -14,7 +14,7 @@ export default function GroupContainer({
   });
 
   return (
-    <Card ref={setNodeRef} className="mx-2 w-full max-w-sm pt-0">
+    <Card ref={setNodeRef} className="mx-2 w-75 max-w-sm pt-0">
       <CardHeader className="bg-green-600">
         <CardTitle className='py-1 font-bold text-white'>{group.name}</CardTitle>
       </CardHeader>
