@@ -27,8 +27,8 @@ export function TournamentBracket() {
   }
   return (
     <div className="mt-5">
-      <div className="mb-4 flex justify-center sm:justify-end">
-        <Button variant="outline" className="bg-transparent border-0" onClick={handleResetKnockout}>
+      <div className="my-4 flex justify-center sm:justify-end">
+        <Button variant="outline" className="bg-transparent border-0 my-6" onClick={handleResetKnockout}>
           <RotateCcw className="mr-2 h-4 w-4" />
           Resetar mata-mata
         </Button>
