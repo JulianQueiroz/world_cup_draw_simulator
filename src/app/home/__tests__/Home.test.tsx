@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import Home from '../page';
 import { useStore } from '../../../lib/store';
 
-vi.mock('../../lib/store', () => ({ useStore: vi.fn() }));
+vi.mock('../../../lib/store', () => ({ useStore: vi.fn() }));
 vi.mock('../../components/SwitchTabs', () => ({ default: () => <div /> }));
 vi.mock('../../components/Menu', () => ({ default: () => <div /> }));
 vi.mock('../../components/Groups', () => ({ default: () => <div /> }));

@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import {shuffleArray} from './utils';
+import { shuffleArray } from '../utils';
 
 describe('shuffleArray', () => {
   test('retorna array com o mesmo tamanho', () => {

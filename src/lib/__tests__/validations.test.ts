@@ -1,11 +1,7 @@
 import { describe, test, expect } from 'vitest';
-import {
-  validateDrawSelection,
-  validateDuplicateTeams,
-  validateGroupCompletion,
-  validateMinimumTeams,
-} from './validations';
-import type { Team, Group } from '../types/draw';
+import { validateDrawSelection, validateDuplicateTeams, validateGroupCompletion, validateMinimumTeams } from '../draw/validations';
+import { Group, Team } from '@/types/draw';
+
 
 const makeTeam = (id: string): Team => ({
   id, name: `Time ${id}`, code: id, iso: 'BR', confederation: 'CONMEBOL',
