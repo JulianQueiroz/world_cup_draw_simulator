@@ -1,6 +1,6 @@
+import { Group, Team } from '@/types/draw';
 import { describe, test, expect } from 'vitest';
 import { validateDrawSelection, validateDuplicateTeams, validateGroupCompletion, validateMinimumTeams } from '../draw/validations';
-import { Group, Team } from '@/types/draw';
 
 
 const makeTeam = (id: string): Team => ({

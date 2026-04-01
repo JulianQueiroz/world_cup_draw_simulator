@@ -1,9 +1,10 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { render } from '@testing-library/react';
-import Home from '../page';
-import { useStore } from '../../../lib/store';
+import { useStore } from '@/lib/store';
+import Home from './page';
 
-vi.mock('../../../lib/store', () => ({ useStore: vi.fn() }));
+
+vi.mock('../lib/store', () => ({ useStore: vi.fn() }));
 vi.mock('../../components/SwitchTabs', () => ({ default: () => <div /> }));
 vi.mock('../../components/Menu', () => ({ default: () => <div /> }));
 vi.mock('../../components/Groups', () => ({ default: () => <div /> }));
@@ -13,7 +14,7 @@ vi.mock('./style', () => ({
   ContentWrapper: ({ children }: any) => <div>{children}</div>,
   GroupsLayout: ({ children }: any) => <div>{children}</div>,
 }));
-vi.mock('../../lib/knockout', () => ({ generateTournamentFromGroups: vi.fn(() => ({ rounds: [] })) }));
+vi.mock('../lib/knockout', () => ({ generateTournamentFromGroups: vi.fn(() => ({ rounds: [] })) }));
 
 const mockGroups = [{ id: 'group-1', name: 'Grupo A', teams: [{ id: 'BRA', name: 'Brasil', code: 'BRA', iso: 'BR', confederation: 'CONMEBOL' }] }];
 

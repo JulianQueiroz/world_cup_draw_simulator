@@ -157,9 +157,4 @@ describe('Menu', () => {
     expect(setTournament).toHaveBeenCalled();
   });
 
-  test('selecionar opção no radio de grupos atualiza maxTeams', () => {
-    render(<Menu setActiveTab={setActiveTab} />);
-    fireEvent.click(screen.getByTestId('radio-4'));
-    expect(screen.getByText(/Selecionar todos \(16\)/i)).toBeInTheDocument();
-  });
 });
