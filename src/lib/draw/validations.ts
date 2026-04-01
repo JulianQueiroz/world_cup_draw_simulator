@@ -24,10 +24,14 @@ export function validateMinimumTeams(selectedTeams: Team[], min: number): string
   return null;
 }
 
-export function validateEqualGroupSizes(groups: Group[], teamsPerGroup: number): string | null {
-  const uneven = groups.find((g) => g.teams.length !== teamsPerGroup);
+export function validateEqualGroupSizes(groups: Group[]): string | null {
+  if (groups.length === 0) return null;
+  
+  const expectedSize = groups[0].teams.length;
+  const uneven = groups.find((g) => g.teams.length !== expectedSize);
+  
   if (uneven) {
-    return `O ${uneven.name} tem ${uneven.teams.length} time(s) — todos os grupos precisam ter exatamente ${teamsPerGroup} times.`;
+    return `O ${uneven.name} tem ${uneven.teams.length} time(s) — todos os grupos precisam ter exatamente ${expectedSize} times.`;
   }
   return null;
 }

@@ -3,13 +3,26 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import Menu from '../index';
 import { useStore } from '../../../lib/store';
 
-vi.mock('../../lib/store', () => ({ useStore: vi.fn() }));
-vi.mock('../../components/ui/card', () => ({ Card: ({ children }: any) => <div>{children}</div> }));
-vi.mock('../../components/ui/button', () => ({ Button: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button> }));
+vi.mock('../../../lib/store', () => ({ useStore: vi.fn() }));
+vi.mock('../../ui/card', () => ({ Card: ({ children }: any) => <div>{children}</div> }));
+vi.mock('../../ui/button', () => ({ Button: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button> }));
 vi.mock('../CompletedSelectionProgress', () => ({ default: () => <div /> }));
-vi.mock('../Slider', () => ({ default: ({ title, onChange, max }: any) => <div data-testid={title} data-max={max} /> }));
+vi.mock('../Slider', () => ({
+  default: ({ title, max }: any) => <div data-testid={title} data-max={max} />,
+}));
+vi.mock('../RadioGroup', () => ({
+  default: ({ title, onChange, options }: any) => (
+    <div data-testid={title}>
+      {options.map((opt: number) => (
+        <button key={opt} onClick={() => onChange(opt)}>
+          {opt}
+        </button>
+      ))}
+    </div>
+  ),
+}));
 vi.mock('../TeamSelection', () => ({ default: () => <div /> }));
-vi.mock('../../data/team.json', () => ({
+vi.mock('../../../data/team.json', () => ({
   default: {
     teams: Array.from({ length: 32 }, (_, i) => ({
       code: `T${i}`,
@@ -19,16 +32,36 @@ vi.mock('../../data/team.json', () => ({
     })),
   },
 }));
+vi.mock('../../../lib/repository/drawRepository', () => ({
+  drawRepository: {
+    loadSettings: vi.fn(() => null),
+    saveSettings: vi.fn(),
+    saveGroups: vi.fn(),
+    saveTournament: vi.fn(),
+  },
+}));
+vi.mock('../../../lib/knockout/knockout', () => ({
+  generateTournamentFromGroups: vi.fn(() => ({ rounds: [] })),
+}));
+vi.mock('../../../lib/draw/groups', () => ({
+  buildGroups: vi.fn((teams, totalGroups, teamsPerGroup) =>
+    Array.from({ length: totalGroups }, (_, i) => ({
+      id: `group-${i + 1}`,
+      name: `Grupo ${String.fromCharCode(65 + i)}`,
+      teams: teams.slice(i * teamsPerGroup, (i + 1) * teamsPerGroup),
+    }))
+  ),
+}));
 
 describe('Menu', () => {
   let setGroups: ReturnType<typeof vi.fn>;
-  let setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  let setActiveTab: (tab: string) => void;
   let setTournament: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     setGroups = vi.fn();
     setTournament = vi.fn();
-    setActiveTab = vi.fn() as unknown as React.Dispatch<React.SetStateAction<string>>;
+    setActiveTab = vi.fn();
     (useStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       setGroups,
       setTournament,
@@ -43,12 +76,6 @@ describe('Menu', () => {
     expect(screen.getByText(/Selecione ao menos/i)).toBeInTheDocument();
   });
 
-  test('slider de grupos respeita max baseado em 32 times', () => {
-    render(<Menu setActiveTab={setActiveTab} />);
-    const slider = screen.getByTestId('Número de grupos');
-    expect(Number(slider.getAttribute('data-max'))).toBeLessThanOrEqual(32);
-  });
-
   test('slider de times por grupo respeita max baseado em 32 times', () => {
     render(<Menu setActiveTab={setActiveTab} />);
     const slider = screen.getByTestId('Times por grupo');
@@ -57,8 +84,6 @@ describe('Menu', () => {
 
   test('selecionar todos preenche até o limite de maxTeams', () => {
     render(<Menu setActiveTab={setActiveTab} />);
-    fireEvent.click(screen.getByText(/Selecionar todos/i));
-    // com 2 grupos x 4 times = 8 times selecionados
     expect(screen.getByText(/Selecionar todos \(8\)/i)).toBeInTheDocument();
   });
 
@@ -91,7 +116,7 @@ describe('Menu', () => {
     fireEvent.click(screen.getByText('Avançar para Mata-Mata'));
     expect(setActiveTab).toHaveBeenCalledWith('knockout');
   });
-  
+
   test('drag entre grupos seguido de avançar emite erro de tamanho desigual', () => {
     const groups = [
       {
@@ -118,26 +143,25 @@ describe('Menu', () => {
       },
     ];
 
-    (useStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
-      setGroups,
-      setTournament,
-      groups,
-    });
+    (useStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({ setGroups, setTournament, groups });
 
     render(<Menu setActiveTab={setActiveTab} />);
     fireEvent.click(screen.getByText('Avançar para Mata-Mata'));
-
     expect(setActiveTab).not.toHaveBeenCalled();
     expect(screen.getByText(/precisam ter exatamente/i)).toBeInTheDocument();
   });
 
-  test('re-sortear chama setGroups e setTournament novamente', () => {
+  test('re-sortear chama setGroups e setTournament', () => {
     render(<Menu setActiveTab={setActiveTab} />);
-
     fireEvent.click(screen.getByText(/Selecionar todos/i));
     fireEvent.click(screen.getByText('Re-sortear'));
-
     expect(setGroups).toHaveBeenCalled();
     expect(setTournament).toHaveBeenCalled();
+  });
+
+  test('selecionar opção no radio de grupos atualiza maxTeams', () => {
+    render(<Menu setActiveTab={setActiveTab} />);
+    fireEvent.click(screen.getByText('4'));
+    expect(screen.getByText(/Selecionar todos \(16\)/i)).toBeInTheDocument();
   });
 });

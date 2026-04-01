@@ -1,6 +1,5 @@
 import { DrawMenuState, Group, Team } from '../../types/draw';
 import CompletedSelectionProgress from '../CompletedSelectionProgress';
-import SliderComponent from '../Slider';
 import TeamSelection from '../TeamSelection';
 import { useEffect, useState } from 'react';
 import { shuffleArray } from '../../lib/utils';
@@ -12,6 +11,8 @@ import { validateDrawSelection, validateDuplicateTeams, validateEqualGroupSizes,
 import { drawRepository } from '@/lib/repository/drawRepository';
 import { generateTournamentFromGroups } from '@/lib/knockout/knockout';
 import { buildGroups } from '@/lib/draw/groups';
+import RadioGroup from '../RadioGroup';
+import SliderComponent from '../Slider';
 
 const MAX_TEAMS = 32;
 
@@ -24,35 +25,31 @@ const allTeams: Team[] = data.teams.map((team) => ({
 }));
 
 type Props = {
-  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  setActiveTab: (tab: string) => void;
 };
 
 const Menu = ({ setActiveTab }: Props) => {
   const { setGroups, groups, setTournament } = useStore();
-  const [groupsCount, setGroupsCount] = useState<number[]>([2]);
-  const [teamsPerGroup, setTeamsPerGroup] = useState<number[]>([4]);
+  const [groupsCount, setGroupsCount] = useState(2);
+  const [teamsPerGroup, setTeamsPerGroup] = useState(4);
   const [selectedTeams, setSelectedTeams] = useState<Team[]>([]);
   const [error, setError] = useState<string | null>(null);
-
-  const totalGroups = groupsCount[0];
-  const totalTeamsPerGroup = teamsPerGroup[0];
-  const maxTeams = Math.min(totalGroups * totalTeamsPerGroup, MAX_TEAMS);
-  const selectedCount = selectedTeams.length;
-
-  const maxTeamsPerGroup = Math.floor(MAX_TEAMS / totalGroups);
-  const maxGroups = Math.floor(MAX_TEAMS / totalTeamsPerGroup);
   const [isHydrated, setIsHydrated] = useState(false);
+
+  const totalGroups = groupsCount;
+  const totalTeamsPerGroup = teamsPerGroup;
+  const maxTeams = Math.min(totalGroups * totalTeamsPerGroup, MAX_TEAMS);
+  const maxTeamsPerGroup = Math.floor(MAX_TEAMS / totalGroups);
+  const selectedCount = selectedTeams.length;
 
   useEffect(() => {
     const savedSettings = drawRepository.loadSettings();
     if (savedSettings) {
       const restoredMaxTeams = Math.min(savedSettings.totalGroups * savedSettings.teamsPerGroup, MAX_TEAMS);
-
-      setGroupsCount([savedSettings.totalGroups]);
-      setTeamsPerGroup([savedSettings.teamsPerGroup]);
+      setGroupsCount(savedSettings.totalGroups);
+      setTeamsPerGroup(savedSettings.teamsPerGroup);
       setSelectedTeams((savedSettings.selectedTeams ?? []).slice(0, restoredMaxTeams));
     }
-
     setIsHydrated(true);
   }, []);
 
@@ -64,49 +61,30 @@ const Menu = ({ setActiveTab }: Props) => {
 
   useEffect(() => {
     if (!isHydrated) return;
-
     const settings: DrawMenuState = {
       totalGroups,
       teamsPerGroup: totalTeamsPerGroup,
       maxTeams,
       selectedTeams,
     };
-
     drawRepository.saveSettings(settings);
   }, [isHydrated, totalGroups, totalTeamsPerGroup, maxTeams, selectedTeams]);
 
   function handleDrawGroups() {
     const selectionError = validateDrawSelection(selectedTeams, maxTeams);
-    if (selectionError) {
-      setError(selectionError);
-      return;
-    }
+    if (selectionError) return setError(selectionError);
 
     const duplicateError = validateDuplicateTeams(selectedTeams);
-    if (duplicateError) {
-      setError(duplicateError);
-      return;
-    }
+    if (duplicateError) return setError(duplicateError);
+
     setError(null);
 
-    const shuffledTeams = shuffleArray(selectedTeams);
-    const groups = buildGroups(shuffledTeams, totalGroups, totalTeamsPerGroup);
-
-    let teamIndex = 0;
-    for (let groupIndex = 0; groupIndex < totalGroups; groupIndex++) {
-      for (let slot = 0; slot < totalTeamsPerGroup; slot++) {
-        if (teamIndex >= shuffledTeams.length) break;
-        groups[groupIndex].teams.push(shuffledTeams[teamIndex]);
-        teamIndex++;
-      }
-    }
+    const shuffled = shuffleArray(selectedTeams);
+    const groups = buildGroups(shuffled, totalGroups, totalTeamsPerGroup);
     const tournament = generateTournamentFromGroups(groups, 2);
 
     setGroups(groups);
-    drawRepository.saveGroups(groups);
-
     setTournament(tournament);
-    drawRepository.saveTournament(tournament);
   }
 
   function handleSelectAll() {
@@ -114,68 +92,43 @@ const Menu = ({ setActiveTab }: Props) => {
   }
 
   function handleAutoDrawGroups() {
-    const shuffledAll = shuffleArray(allTeams).slice(0, maxTeams);
-    setSelectedTeams(shuffledAll);
-
-    const groups = buildGroups(shuffledAll, totalGroups, totalTeamsPerGroup);
-
-    let teamIndex = 0;
-    for (let groupIndex = 0; groupIndex < totalGroups; groupIndex++) {
-      for (let slot = 0; slot < totalTeamsPerGroup; slot++) {
-        if (teamIndex >= shuffledAll.length) break;
-        groups[groupIndex].teams.push(shuffledAll[teamIndex]);
-        teamIndex++;
-      }
-    }
-
+    const shuffled = shuffleArray(allTeams).slice(0, maxTeams);
+    const groups = buildGroups(shuffled, totalGroups, totalTeamsPerGroup);
     const tournament = generateTournamentFromGroups(groups, 2);
 
+    setSelectedTeams(shuffled);
     setGroups(groups);
-    drawRepository.saveGroups(groups);
-
     setTournament(tournament);
-    drawRepository.saveTournament(tournament);
-
     setError(null);
   }
 
   function handleAdvanceToKnockout() {
     const completionError = validateGroupCompletion(groups, totalGroups * totalTeamsPerGroup);
-    if (completionError) {
-      setError(completionError);
-      return;
-    }
+    if (completionError) return setError(completionError);
+
+    const sizeError = validateEqualGroupSizes(groups);
+    if (sizeError) return setError(sizeError);
 
     const tournament = generateTournamentFromGroups(groups, 2);
-
     setTournament(tournament);
-    drawRepository.saveTournament(tournament);
 
-    const sizeError = validateEqualGroupSizes(groups, totalTeamsPerGroup);
-    if (sizeError) return setError(sizeError);
     setError(null);
     setActiveTab('knockout');
   }
 
   return (
-    <Card className="mx-auto flex w-full max-w-sm flex-col gap-2 p-5 ">
-      <SliderComponent
+    <Card className="mx-auto flex w-full max-w-sm flex-col gap-2 p-5">
+      <RadioGroup
         title="Número de grupos"
-        sliderValue={groupsCount}
-        onChange={(val) => {
-          const newMax = Math.floor(MAX_TEAMS / teamsPerGroup[0]);
-          setGroupsCount([Math.min(val[0], newMax)]);
-        }}
-        max={maxGroups}
+        value={groupsCount}
+        onChange={(val) => setGroupsCount(val)}
+        options={[2, 4, 8]}
       />
 
       <SliderComponent
         title="Times por grupo"
-        sliderValue={teamsPerGroup}
-        onChange={(val) => {
-          const newMax = Math.floor(MAX_TEAMS / groupsCount[0]);
-          setTeamsPerGroup([Math.min(val[0], newMax)]);
-        }}
+        sliderValue={[teamsPerGroup]}
+        onChange={(val) => setTeamsPerGroup(Math.min(val[0], maxTeamsPerGroup))}
         max={maxTeamsPerGroup}
       />
 
