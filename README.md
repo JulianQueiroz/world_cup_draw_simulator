@@ -1,4 +1,9 @@
 # World Cup Draw Simulator 2026
+
+![Group stage](public/preview1.jpeg)
+
+![Knockouts](public/preview2.jpeg)
+
 #### Link de acesso:
 [https://world-cup-draw-simulator-ashen.vercel.app/](https://world-cup-draw-simulator-ashen.vercel.app/)
 
